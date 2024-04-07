@@ -1,0 +1,73 @@
+<resources>
+    <string name="app_name">Industrial Watch</string>
+    <string name="welcome">Welcome</string>
+    <string name="name">Name</string>
+
+    <!-- admin dashboard -->
+    <string name="admin_dashboard">Admin Dashboard</string>
+    <string name="section">Section</string>
+    <string name="supervisor">Supervisor</string>
+    <string name="production">Production</string>
+    <string name="employee_productivity">Employee\nProductivity</string>
+
+    <!--- production dashboard -->
+    <string name="material">Materials</string>
+    <string name="add_material">Add Material</string>
+    <string name="add_raw_material">Add Raw Material</string>
+    <string name="add_product">Add Product</string>
+    <string name="inventory">Inventory</string>
+    <string name="batch">Batch</string>
+    <string name="inspection_angles">Inspection Angles</string>
+    <string name="rejection_tolerance">Rejection Tolerance</string>
+    <string name="formula_per_item">Formula per item</string>
+    <string name="add_stock">Add Stock</string>
+
+
+    <string name="add_section">Add Section</string>
+    <string name="confirm_section">Confirm Section</string>
+    <string name="edit_section">Edit Section</string>
+    <string name="enter_section_name">Enter Section Name</string>
+    <string name="enter_name">Enter Name</string>
+    <string name="enter_username">Enter Username</string>
+    <string name="enter_password">Enter Password</string>
+    <string name="rules">Rules</string>
+    <string name="rules_included">Rules Included</string>
+    <string name="enter_fine">Enter Fine</string>
+    <string name="time">Time</string>
+    <string name="time_hint">00:00</string>
+
+    <!-- Production !-->
+    <string name="search_batch">Search Batch</string>
+    <string name="create_batch">Create Batch</string>
+    <string name="create_account">Create Account</string>
+    <string name="add_batch">Add Batch</string>
+    <string name="add">Add</string>
+    <string name="batch_number">Batch#</string>
+    <string name="no_of_angles">No. of angles</string>
+    <string name="tolerance_perc">Tolerance %</string>
+    <string name="raw_materials">Raw Materials</string>
+    <string name="new_materials">Raw Materials</string>
+    <string name="new_material">New Material</string>
+    <string name="material_name">Material Name</string>
+    <string name="quantity">Quantity</string>
+    <string name="quantity_per_item">Quantity per Item</string>
+    <string name="price">Price</string>
+    <string name="cancel">Cancel</string>
+
+    <string name="spinner_prompt">Select an item</string>
+
+    <!-- arrays -->
+    <string-array name="angles_list">
+        <item>1 Top</item>
+        <item>2 Flip</item>
+        <item>3 Right</item>
+        <item>4 Left</item>
+        <item>5 Front</item>
+        <item>6 Back</item>
+    </string-array>
+    <string-array name="unit_list">
+        <item>G</item>
+        <item>MG</item>
+        <item>kG</item>
+    </string-array>
+</resources>

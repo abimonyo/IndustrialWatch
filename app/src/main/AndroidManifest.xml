@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.IndustrialWatch"
+        android:usesCleartextTraffic="true"
+        tools:targetApi="31">
+        <activity
+            android:name=".app.module.ui.admin.production.InventoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".app.module.ui.admin.production.ProductActivity"
+            android:exported="false" />
+        <activity
+            android:name=".app.module.ui.admin.production.RawMaterialActivity"
+            android:exported="false" />
+        <activity
+            android:name=".app.module.ui.admin.production.ProductionDashboardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".app.module.ui.supervisor.AddSupervisorActivity"
+            android:exported="false" />
+        <activity
+            android:name=".app.module.ui.supervisor.SupervisorActivity"
+            android:exported="false" />
+        <activity
+            android:name=".app.module.ui.admin.section.SectionDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".app.module.ui.admin.production.AddBatchActivity"
+            android:exported="false" />
+        <activity
+            android:name=".app.module.ui.admin.production.ProductionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".app.module.ui.admin.section.AddUpdateSectionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".app.module.ui.admin.section.SectionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".app.module.ui.admin.main.AdminDashboardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".app.module.ui.authentication.LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".app.module.ui.admin.main.MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".app.module.ui.SplashActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

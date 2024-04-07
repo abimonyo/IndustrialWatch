@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        tools:context=".app.module.ui.admin.section.SectionActivity">
+
+        <include
+            android:id="@+id/sectionAppLayout"
+            layout="@layout/layout_toolbar" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/sectionAppLayout"
+            android:id="@+id/tv_rules_included"
+            android:text="@string/rules_included"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/inter_semi_bold"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="12dp"
+
+            />
+        <include
+            android:id="@+id/section_rules_rcv"
+            layout="@layout/layout_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_rules_included"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_above="@+id/btn_add_section"/>
+
+        <Button
+            android:id="@+id/btn_add_section"
+            style="@style/ButtonPrimaryStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="30dp"
+            android:text="@string/edit_section" />
+
+    </RelativeLayout>
+</layout>

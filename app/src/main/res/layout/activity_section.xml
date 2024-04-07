@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        tools:context=".app.module.ui.admin.section.SectionActivity">
+
+        <include
+            android:id="@+id/sectionAppLayout"
+            layout="@layout/layout_toolbar" />
+
+        <include
+            layout="@layout/layout_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/btn_add_section"
+            android:layout_below="@+id/sectionAppLayout"
+            android:id="@+id/included_rcv"
+
+            />
+
+        <Button
+            android:id="@+id/btn_add_section"
+            style="@style/ButtonPrimaryStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="30dp"
+            android:text="@string/add_section" />
+
+    </RelativeLayout>
+</layout>

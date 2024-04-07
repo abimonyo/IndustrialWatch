@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Background for the spinner -->
+    <item android:drawable="@drawable/bg_grey" />
+
+    <!-- End icon drawable -->
+    <item
+        android:drawable="@drawable/baseline_keyboard_arrow_down_24"
+        android:gravity="end|center_vertical" />
+</layer-list>
