@@ -43,24 +43,14 @@ public class SectionActivity extends BaseRecyclerViewActivity implements OnRecyc
 
     ActivitySectionBinding binding;
     SectionAdapter adapter;
-    ProductionAdapter productionAdapter;
-    Bundle bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivitySectionBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        if (getIntent().getExtras() != null)
-            bundle = getIntent().getExtras();
         initView();
 
-    }
-
-    private Map<String, String> getServerParams() {
-        Map<String, String> params = new HashMap<>();
-        params.put("id", bundle.getInt(AppConstants.BUNDLE_KEY, 0) + "");
-        return params;
     }
 
 
@@ -68,26 +58,17 @@ public class SectionActivity extends BaseRecyclerViewActivity implements OnRecyc
     protected void onResume() {
         super.onResume();
         adapter = null;
-        productionAdapter = null;
         setAdapter(null);
-        if (bundle != null && bundle.getString(AppConstants.FROM).equals("inventory"))
-            doGetRequest(AppConstants.GET_INVENTORY_DETAIL_BY_RAW_MATERIAL, getServerParams(), this);
-        else
-            doGetRequest(AppConstants.SECTION_URL, this);
+
+        doGetRequest(AppConstants.SECTION_URL, this);
 
     }
 
     private void initView() {
-        if (bundle != null && bundle.getString(AppConstants.FROM).equals("inventory")) {
-            binding.btnAddSection.setVisibility(View.GONE);
-            setPrimaryActionBar(binding.sectionAppLayout.primaryToolbar, getString(R.string.inventory));
-            setRecyclerViewHeader("#","Quantity","Price/kg","Date");
-        } else {
-            binding.btnAddSection.setOnClickListener(this);
-            hideView(binding.includedRcv.headerLayout.layoutHeaderWrapper);
-            setPrimaryActionBar(binding.sectionAppLayout.primaryToolbar, getString(R.string.section));
 
-        }
+        binding.btnAddSection.setOnClickListener(this);
+        hideView(binding.includedRcv.headerLayout.layoutHeaderWrapper);
+        setPrimaryActionBar(binding.sectionAppLayout.primaryToolbar, getString(R.string.section));
         initRecyclerView(binding.includedRcv.recyclerView);
     }
 
@@ -127,17 +108,12 @@ public class SectionActivity extends BaseRecyclerViewActivity implements OnRecyc
                         setAdapter(adapter);
                     }
 
-                } else if (call.request().url().toString().contains(AppConstants.GET_INVENTORY_DETAIL_BY_RAW_MATERIAL)) {
-                    JSONArray jsonArray = new JSONArray(response.body().string());
-                    List<BaseItem> inventoryList = new Gson().fromJson(jsonArray.toString(), new TypeToken<List<StockModel>>() {
-                    }.getType());
-                    // AppConstants.VIEW_FOR_DETAIL_OR_FOR_ITEM = BaseItem.ITEM_INVENTORY_DETAIL;
-                    productionAdapter = new ProductionAdapter(inventoryList, null);
-                    setAdapter(productionAdapter);
                 }
             } catch (JSONException | IOException e) {
                 Log.d("error==>>", e.getMessage());
             }
+        } else {
+            showErrorMessage(response);
         }
     }
 

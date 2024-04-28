@@ -58,7 +58,7 @@ public class ProductActivity extends BaseRecyclerViewActivity implements View.On
     List<Map<String, Object>> selectedRawMaterilList;
     ProductionAdapter adapter;
     List<BaseItem> rawBaseList;
-
+    String selectedMaterialName;
 
     @Override
 
@@ -96,7 +96,6 @@ public class ProductActivity extends BaseRecyclerViewActivity implements View.On
                 }
             }
         });
-        binding.spAngles.setPrompt("Select an item");
         binding.spAngles.setAdapter(adapter);
     }
 
@@ -106,11 +105,9 @@ public class ProductActivity extends BaseRecyclerViewActivity implements View.On
             showAddMaterialDialogue();
         } else if (v.getId() == R.id.button) {
             String name = getValueFromField(binding.etName);
-            float tolerance = Float.parseFloat(binding.etRejTolerance.getText().toString());
             JSONObject requestJson = new JSONObject();
             try {
                 requestJson.put("name", name);
-                requestJson.put("rejection_tolerance", tolerance);
                 requestJson.put("inspection_angles", String.join(", ", checkedAnglesList));
                 JSONArray jsonArray = new JSONArray();
                 for (Map<String, Object> map : selectedRawMaterilList) {
@@ -144,8 +141,8 @@ public class ProductActivity extends BaseRecyclerViewActivity implements View.On
             spinner.setAdapter(adapter);
         }
         Spinner spinnerUnit = customLayout.findViewById(R.id.sp_unit);
-        spinnerUnit.setSelected(false);  // must
-        spinnerUnit.setSelection(0, true);  //must
+        spinnerUnit.setSelected(false);
+        spinnerUnit.setSelection(0, true);
         spinnerUnit.setOnItemSelectedListener(this);
         spinnerUnit.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.unit_list)));
         builder.setView(customLayout);
@@ -157,12 +154,20 @@ public class ProductActivity extends BaseRecyclerViewActivity implements View.On
             public void onClick(View v) {
 
                 rawMap.put("quantity", Integer.parseInt(getValueFromField(customLayout.findViewById(R.id.et_quantity))));
-                selectedRawMaterilList.add(rawMap);
+                Map<String, Object> newRawMap = new HashMap<>();
+                newRawMap.put("name", rawMap.get("name"));
+                newRawMap.put("raw_material_id", rawMap.get("raw_material_id"));
+                newRawMap.put("quantity", Integer.parseInt(getValueFromField(customLayout.findViewById(R.id.et_quantity))));
+                newRawMap.put("unit",rawMap.get("unit"));
+                selectedRawMaterilList.add(newRawMap);
                 StockModel model = new StockModel();
-                model.setTotal_quantity(Integer.parseInt(getValueFromField(customLayout.findViewById(R.id.et_quantity))));
+                model.setRaw_material_name((String) rawMap.get("name"));
+                model.setTotal_quantity(getValueFromField(customLayout.findViewById(R.id.et_quantity)));
                 rawBaseList.add(model);
+                AppConstants.VIEW_FOR_DETAIL_OR_FOR_ITEM=BaseItem.ITEM_INVENTORY;
                 adapter = new ProductionAdapter(rawBaseList, null);
                 setAdapter(adapter);
+                rawMap.clear();
                 dialog.dismiss();
             }
         });
@@ -204,6 +209,7 @@ public class ProductActivity extends BaseRecyclerViewActivity implements View.On
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         Spinner spinner = (Spinner) parent;
         if (spinner.getId() == R.id.sp_name) {
+            rawMap.put("name",rawMaterialModelsList.get(position).getName());
             rawMap.put("raw_material_id", rawMaterialModelsList.get(position).getId());
         } else if (spinner.getId() == R.id.sp_unit) {
             rawMap.put("unit", spinner.getSelectedItem().toString());

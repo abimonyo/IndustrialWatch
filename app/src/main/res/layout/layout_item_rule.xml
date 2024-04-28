@@ -7,71 +7,77 @@
             name="model"
             type="com.app.industrialwatch.app.data.models.RulesModel" />
     </data>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="20dp"
-    android:layout_marginEnd="20dp"
-    android:layout_marginTop="20dp">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
         android:orientation="vertical">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{model.name}"
-            android:textSize="20sp"
-            android:fontFamily="@font/inter_regular"
-            android:textColor="@color/black"/>
-        <EditText
-            android:layout_width="wrap_content"
-            android:id="@+id/et_rule_item_fine"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_with_stroke"
-            android:hint="@string/enter_fine"
-            android:paddingTop="11dp"
-            android:paddingStart="7dp"
-            android:paddingBottom="11dp"
-            android:paddingEnd="15dp"
-            android:textColorHint="@color/hint_color"
-            android:layout_marginTop="13dp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/time"
-            android:textSize="16sp"
-            android:fontFamily="@font/inter_regular"
-            android:textColor="@color/black"
-            android:layout_marginTop="6dp"/>
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_with_stroke"
-            android:hint="@string/time_hint"
 
-            android:padding="11dp"
-            android:textColorHint="@color/hint_color"
-            android:layout_marginTop="4dp"
-            android:id="@+id/et_rule_item_time"/>
-    </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        android:id="@+id/cb_rule_item"
-        />
-<!--    <View-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="1dp"-->
-<!--        android:background="@color/divider_color"-->
-<!--        android:layout_alignParentBottom="true"-->
-<!--        android:layout_marginTop="16dp"-->
-<!--        />-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_regular"
+                android:text="@{model.name}"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
 
-</RelativeLayout>
+            <EditText
+                android:id="@+id/et_rule_item_fine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="13dp"
+                android:background="@drawable/bg_with_stroke"
+                android:hint="@string/enter_fine"
+                android:inputType="number"
+                android:paddingStart="7dp"
+                android:paddingTop="11dp"
+                android:paddingEnd="15dp"
+                android:paddingBottom="11dp"
+                android:textColorHint="@color/hint_color" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:fontFamily="@font/inter_regular"
+                android:text="@string/time"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/et_rule_item_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/bg_with_stroke"
+                android:hint="@string/time_hint"
+                android:inputType="text"
+                android:padding="11dp"
+                android:textColorHint="@color/hint_color" />
+        </LinearLayout>
+
+        <CheckBox
+            android:id="@+id/cb_rule_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:checked="@{model.checked}"
+            android:layout_centerVertical="true" />
+        <!--    <View-->
+        <!--        android:layout_width="match_parent"-->
+        <!--        android:layout_height="1dp"-->
+        <!--        android:background="@color/divider_color"-->
+        <!--        android:layout_alignParentBottom="true"-->
+        <!--        android:layout_marginTop="16dp"-->
+        <!--        />-->
+
+    </RelativeLayout>
 </layout>

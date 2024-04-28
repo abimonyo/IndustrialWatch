@@ -115,8 +115,8 @@ public class RawMaterialActivity extends BaseRecyclerViewActivity implements Cal
         });
     }
 
-    private Map<String, String> getServerParams(String name) {
-        Map<String, String> params = new HashMap<>();
+    private Map<String, Object> getServerParams(String name) {
+        Map<String, Object> params = new HashMap<>();
         params.put("name", name);
         return params;
     }
@@ -125,15 +125,14 @@ public class RawMaterialActivity extends BaseRecyclerViewActivity implements Cal
     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
         if (response.isSuccessful()) {
             try {
-                // JSONObject object=new JSONObject(response.body().string());
+                Log.d("response==>>",response.body().string());
                 JSONArray array = new JSONArray(response.body().string());
                 List<BaseItem> rawMaterialList = new Gson().fromJson(array.toString(), new TypeToken<List<RawMaterialModel>>() {
                 }.getType());
-                if (adapter != null)
-                    adapter.clearItems();
-                adapter = new ProductionAdapter(rawMaterialList, null);
-                setAdapter(adapter);
-                if (rawMaterialList.size() > 0) {
+                if (adapter == null) {
+                    adapter = new ProductionAdapter(rawMaterialList, null);
+                    setAdapter(adapter);
+                } else if (rawMaterialList.size() > 0) {
                     adapter.clearItems();
                     adapter.addAll(rawMaterialList);
                 }

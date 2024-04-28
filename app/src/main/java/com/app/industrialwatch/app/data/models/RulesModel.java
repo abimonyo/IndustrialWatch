@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class RulesModel  implements BaseItem {
+public class RulesModel implements BaseItem {
     @SerializedName("allowed_time")
     @Expose
     private String allowedTime;
@@ -17,14 +17,16 @@ public class RulesModel  implements BaseItem {
     @SerializedName("fine")
     @Expose
     private Double fine;
-    @SerializedName("id")
+    @SerializedName(value = "rule_id", alternate = {"id"})
     @Expose
     private Integer id;
-    @SerializedName("name")
+
+    @SerializedName(value = "name",alternate = {"rule_name"})
     @Expose
     private String name;
-@Expose
+    @Expose
     private boolean isChecked;
+
     public String getAllowedTime() {
         return allowedTime;
     }
@@ -64,15 +66,19 @@ public class RulesModel  implements BaseItem {
     public void setName(String name) {
         this.name = name;
     }
+
     public String getFineAsRS() {
         return "Rs " + (fine != null ? String.valueOf(fine) : "");
     }
+
     public String getTimeAsTime() {
         return "Time " + (allowedTime != null ? String.valueOf(allowedTime) : "");
     }
+
     public String getFineAsString() {
         return String.valueOf(fine);
     }
+
     public void setFineFromString(String stringValue) {
         try {
             fine = Double.parseDouble(stringValue);

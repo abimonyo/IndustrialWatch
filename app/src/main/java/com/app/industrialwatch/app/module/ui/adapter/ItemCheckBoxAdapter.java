@@ -29,7 +29,6 @@ public class ItemCheckBoxAdapter extends ArrayAdapter<String> {
         listener = listener1;
         this.itemList = itemList;
         itemStates = new HashMap<>();
-        // Initialize all items as unchecked initially
         for (int i = 0; i < itemList.length; i++) {
             itemStates.put(i, false);
         }

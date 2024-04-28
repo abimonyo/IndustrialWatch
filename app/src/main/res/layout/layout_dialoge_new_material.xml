@@ -5,8 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="20dp"
-    android:layout_marginEnd="20dp"
+    android:layout_marginStart="30dp"
+    android:layout_marginEnd="30dp"
     android:background="@drawable/bg_dialogue"
     android:orientation="vertical">
 
@@ -57,7 +57,8 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/inter_semi_bold"
             android:text="@string/quantity"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:id="@+id/tv_quantity"/>
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -80,14 +81,14 @@
         android:layout_centerVertical="true"
         android:layout_toStartOf="@id/sp_unit"
         />
+
     <Spinner
+        android:id="@+id/sp_unit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:entries="@array/unit_list"
-        android:id="@+id/sp_unit"
-        />
+        android:entries="@array/unit_list" />
 
 
 </RelativeLayout>
@@ -108,7 +109,8 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/inter_semi_bold"
             android:text="@string/price"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:id="@+id/tv_price"/>
 
         <EditText
             android:layout_width="match_parent"

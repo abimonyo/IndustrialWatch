@@ -1,6 +1,6 @@
 package com.app.industrialwatch.app.module.ui.admin.section;
 
-import static com.app.industrialwatch.common.utils.AppConstants.GET_RULES_FOR_SECTION_URL;
+import static com.app.industrialwatch.common.utils.AppConstants.GET_SECTION_DETAIL;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -40,7 +40,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SectionDetailsActivity extends BaseRecyclerViewActivity implements Callback<ResponseBody> {
+public class SectionDetailsActivity extends BaseRecyclerViewActivity implements Callback<ResponseBody>, View.OnClickListener {
 
     ActivitySectionDetailsBinding binding;
     Bundle bundle;
@@ -50,14 +50,15 @@ public class SectionDetailsActivity extends BaseRecyclerViewActivity implements 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_section_details);
         binding = ActivitySectionDetailsBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
         if (getIntent().getExtras() != null)
             bundle = getIntent().getExtras();
+        binding.sectionRulesRcv.headerLayout.layoutHeaderWrapper.setVisibility(View.GONE);
         setPrimaryActionBar(binding.sectionAppLayout.primaryToolbar, "Section Name");
         initRecyclerView(binding.sectionRulesRcv.recyclerView);
+        binding.button.setOnClickListener(this);
     }
 
     @Override
@@ -66,12 +67,12 @@ public class SectionDetailsActivity extends BaseRecyclerViewActivity implements 
         adapter = null;
         setAdapter(null);
         if (bundle != null)
-            doGetRequest(GET_RULES_FOR_SECTION_URL, getServerParams(), this);
+            doGetRequest(GET_SECTION_DETAIL, getServerParams(), this);
     }
 
     private Map<String, String> getServerParams() {
         Map<String, String> params = new HashMap<>();
-        params.put("id", bundle.getInt("id", 0) + "");
+        params.put("section_id", bundle.getInt("id", 0) + "");
         return params;
     }
 
@@ -82,21 +83,22 @@ public class SectionDetailsActivity extends BaseRecyclerViewActivity implements 
         if (response.isSuccessful()) {
             try {
                 JSONObject object = new JSONObject(response.body().string());
-                if (object.has("code") && object.getInt("code") == AppConstants.OK) {
-                    AppConstants.VIEW_FOR_DETAIL_OR_FOR_ITEM = BaseItem.SECTION_DETAILS;
-                    sectionId = object.getJSONObject("data").getInt("id");
-                    JSONArray jsonArray = object.getJSONObject("data").getJSONArray("rules");
-                    List<BaseItem> rulesList = new Gson().fromJson(jsonArray.toString(), new TypeToken<List<RulesModel>>() {
-                    }.getType());
-                    if (adapter == null) {
-                        adapter = new SectionAdapter(rulesList, null);
-                        setAdapter(adapter);
-                    }
+                AppConstants.VIEW_FOR_DETAIL_OR_FOR_ITEM = BaseItem.SECTION_DETAILS;
+                sectionId = object.getInt("id");
+                binding.sectionAppLayout.toolbarTitle.setText(object.getString("name"));
+                JSONArray jsonArray = object.getJSONArray("rules");
+                List<BaseItem> rulesList = new Gson().fromJson(jsonArray.toString(), new TypeToken<List<RulesModel>>() {
+                }.getType());
+                if (adapter == null) {
+                    adapter = new SectionAdapter(rulesList, null);
+                    setAdapter(adapter);
                 }
+
             } catch (JSONException | IOException e) {
                 Log.d("error==>>", e.getMessage());
             }
-        }
+        } else
+            showErrorMessage(response);
     }
 
     @Override
@@ -105,4 +107,11 @@ public class SectionDetailsActivity extends BaseRecyclerViewActivity implements 
 
     }
 
+    @Override
+    public void onClick(View v) {
+        if (v == binding.button) {
+            bundle.getString(AppConstants.FROM,"SectionDetails");
+            startActivity(bundle,AddUpdateSectionActivity.class);
+        }
+    }
 }

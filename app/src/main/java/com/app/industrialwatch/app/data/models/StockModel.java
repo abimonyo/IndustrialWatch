@@ -3,29 +3,48 @@ package com.app.industrialwatch.app.data.models;
 import static com.app.industrialwatch.common.utils.AppConstants.VIEW_FOR_DETAIL_OR_FOR_ITEM;
 
 import com.app.industrialwatch.app.business.BaseItem;
+import com.app.industrialwatch.common.utils.AppConstants;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class StockModel implements BaseItem {
 
-    @SerializedName("price_per_unit")
+    @SerializedName("price_per_kg")
     @Expose
     private String price_per_unit;
     @SerializedName("purchased_date")
     @Expose
     private String purchased_date;
-    @SerializedName("quantity")
-    @Expose
-    private int quantity;
     @SerializedName("raw_material_id")
     @Expose
     private int raw_material_id;
-    @SerializedName("raw_material_name")
+
+    @SerializedName(value = "raw_material_name",alternate = {"name"})
     @Expose
     private String raw_material_name;
-    @SerializedName("total_quantity")
+    @SerializedName(value = "total_quantity",alternate = {"quantity"})
     @Expose
-    private int total_quantity;
+    private String total_quantity;
+    @SerializedName("stock_number")
+    @Expose
+    private String stock_number;
+    private boolean isChecked;
+
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
+    }
+
+    public String getStock_number() {
+        return stock_number;
+    }
+
+    public void setStock_number(String stock_number) {
+        this.stock_number = stock_number;
+    }
 
     public String getPrice_per_unit() {
         return price_per_unit;
@@ -43,13 +62,7 @@ public class StockModel implements BaseItem {
         this.purchased_date = purchased_date;
     }
 
-    public int getQuantity() {
-        return quantity;
-    }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
 
     public int getRaw_material_id() {
         return raw_material_id;
@@ -67,16 +80,16 @@ public class StockModel implements BaseItem {
         this.raw_material_name = raw_material_name;
     }
 
-    public int getTotal_quantity() {
+    public String getTotal_quantity() {
         return total_quantity;
     }
 
-    public void setTotal_quantity(int total_quantity) {
+    public void setTotal_quantity(String total_quantity) {
         this.total_quantity = total_quantity;
     }
 
     @Override
     public int getItemType() {
-        return ITEM_INVENTORY;
+        return VIEW_FOR_DETAIL_OR_FOR_ITEM;
     }
 }

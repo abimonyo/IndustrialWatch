@@ -8,6 +8,8 @@
     <string name="section">Section</string>
     <string name="supervisor">Supervisor</string>
     <string name="production">Production</string>
+    <string name="product">Product</string>
+    <string name="link_product">Link Product</string>
     <string name="employee_productivity">Employee\nProductivity</string>
 
     <!--- production dashboard -->
@@ -25,6 +27,7 @@
 
     <string name="add_section">Add Section</string>
     <string name="confirm_section">Confirm Section</string>
+    <string name="confirm">Confirm</string>
     <string name="edit_section">Edit Section</string>
     <string name="enter_section_name">Enter Section Name</string>
     <string name="enter_name">Enter Name</string>
@@ -50,12 +53,23 @@
     <string name="new_material">New Material</string>
     <string name="material_name">Material Name</string>
     <string name="quantity">Quantity</string>
+    <string name="quantity_per_kg">Quantity/KG</string>
+    <string name="price_per_kg">Price/KG</string>
     <string name="quantity_per_item">Quantity per Item</string>
     <string name="price">Price</string>
     <string name="cancel">Cancel</string>
-
+    <string name="select_product">Select Product</string>
+    <string name="packs_batch">Packs/batch</string>
+    <string name="packs_pack">Piece/pack</string>
+    <string name="batch_day">Batch/day</string>
     <string name="spinner_prompt">Select an item</string>
-
+    <string name="save">Save</string>
+    <string name="status">Status</string>
+    <string name="dated">Dated</string>
+    <string name="total_pieces">Total Pieces</string>
+    <string name="defected_pieces">Defected Pieces</string>
+    <string name="total_yield">Total Yield</string>
+    <string name="download_images">Download Images</string>
     <!-- arrays -->
     <string-array name="angles_list">
         <item>1 Top</item>

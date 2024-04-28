@@ -56,7 +56,7 @@ public class SectionAdapter extends BaseRecyclerViewAdapter {
             ((SectionHolder) holder).binding.setModel((SectionModel) getItemAt(position));
             ((SectionHolder) holder).binding.executePendingBindings();
         } else if (holder instanceof ViewRulesHolder) {
-            RulesModel model=(RulesModel) getItemAt(position);
+            RulesModel model = (RulesModel) getItemAt(position);
             ((ViewRulesHolder) holder).binding.tvIndexItem.setText(String.valueOf(position));
             ((ViewRulesHolder) holder).binding.tvTopItem.setText(model.getName());
             ((ViewRulesHolder) holder).binding.tvBelowItem.setText(model.getTimeAsTime());
@@ -68,6 +68,9 @@ public class SectionAdapter extends BaseRecyclerViewAdapter {
                 model.setChecked(isChecked);
                 holder.onClick(buttonView);
             });
+           /* if ((RulesModel) getItemAt(position) != null) {
+                ((RuleHolder) holder).fillData((RulesModel) getItemAt(position));
+            }*/
             ((RuleHolder) holder).binding.setModel((RulesModel) getItemAt(position));
             ((RuleHolder) holder).binding.executePendingBindings();
         }
@@ -134,6 +137,7 @@ public class SectionAdapter extends BaseRecyclerViewAdapter {
             if (getItemClickListener() != null)
                 getItemClickListener().onRecyclerViewItemClick(RuleHolder.this);
         }
+
     }
 
     public int getItemViewType(int position) {

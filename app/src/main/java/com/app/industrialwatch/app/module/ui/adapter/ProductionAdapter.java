@@ -14,16 +14,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.app.industrialwatch.BR;
 import com.app.industrialwatch.R;
 import com.app.industrialwatch.app.business.BaseItem;
+import com.app.industrialwatch.app.data.models.BatchModel;
 import com.app.industrialwatch.app.data.models.RawMaterialModel;
 import com.app.industrialwatch.app.data.models.StockModel;
 import com.app.industrialwatch.common.base.recyclerview.BaseRecyclerViewAdapter;
 import com.app.industrialwatch.common.base.recyclerview.BaseRecyclerViewHolder;
 import com.app.industrialwatch.common.base.recyclerview.OnRecyclerViewItemClickListener;
 import com.app.industrialwatch.databinding.LayoutInventoryItmeBinding;
+import com.app.industrialwatch.databinding.LayoutItemBatchBinding;
+import com.app.industrialwatch.databinding.LayoutItemInventoryDetailsBinding;
 import com.app.industrialwatch.databinding.LayoutItemRuleBinding;
 import com.app.industrialwatch.databinding.LayoutRulesTableBinding;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class ProductionAdapter extends BaseRecyclerViewAdapter {
@@ -43,12 +47,15 @@ public class ProductionAdapter extends BaseRecyclerViewAdapter {
             ViewDataBinding viewDataBinding = DataBindingUtil.inflate(layoutInflater, R.layout.layout_item_raw_materials, parent, false);
             holder = new RawMaterialViewHolder(viewDataBinding);
         } else if (viewType == BaseItem.ITEM_BATCH_NUMBER) {
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_item_batch, parent, false);
-            //holder = new BatchViewHolder(view);
+            LayoutItemBatchBinding inflated = LayoutItemBatchBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+            holder = new ProductBatchViewHolder(inflated);
         } else if (viewType == BaseItem.ITEM_INVENTORY) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
             LayoutInventoryItmeBinding binding = LayoutInventoryItmeBinding.inflate(inflater, parent, false);
             holder = new InventoryViewHolder(binding);
+        } else if (viewType == BaseItem.ITEM_INVENTORY_DETAIL) {
+            LayoutItemInventoryDetailsBinding binding = LayoutItemInventoryDetailsBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+            holder = new InventoryDetailViewHolder(binding);
         }
         return holder;
     }
@@ -61,6 +68,21 @@ public class ProductionAdapter extends BaseRecyclerViewAdapter {
         } else if (holder instanceof InventoryViewHolder) {
             StockModel model = (StockModel) getItemAt(position);
             ((InventoryViewHolder) holder).filterData(model);
+        } else if (holder instanceof ProductBatchViewHolder) {
+            BatchModel batchModel = (BatchModel) getItemAt(position);
+            ((ProductBatchViewHolder) holder).filterData(batchModel);
+        } else if (holder instanceof InventoryDetailViewHolder) {
+            StockModel model = (StockModel) getItemAt(position);
+            ((InventoryDetailViewHolder) holder).setData(model);
+            ((InventoryDetailViewHolder) holder).binding.cbItem.setChecked(model.isChecked());
+            ((InventoryDetailViewHolder) holder).binding.cbItem.setOnCheckedChangeListener((v, isChk) -> {
+                model.setChecked(isChk);
+                View view = v.getRootView();
+                String result = ((InventoryDetailViewHolder) holder).binding.cbItem.isChecked() + "," + model;
+                view.setTag(result);
+                holder.onClick(view);
+
+            });
         }
     }
 
@@ -82,6 +104,38 @@ public class ProductionAdapter extends BaseRecyclerViewAdapter {
             Objects.requireNonNull(item);
             binding.setVariable(BR.model, item);
             binding.executePendingBindings();
+        }
+
+    }
+
+    public class InventoryDetailViewHolder extends BaseRecyclerViewHolder {
+        LayoutItemInventoryDetailsBinding binding;
+
+        @Override
+        protected BaseRecyclerViewHolder populateView() {
+            return null;
+        }
+
+        public InventoryDetailViewHolder(LayoutItemInventoryDetailsBinding view) {
+            super(view, true);
+            binding = view;
+        }
+
+        @Override
+        public void onClick(View v) {
+            super.onClick(v);
+            if (getItemClickListener() != null)
+                getItemClickListener().onRecyclerViewItemClick(ProductionAdapter.InventoryDetailViewHolder.this);
+        }
+
+        @SuppressLint("ResourceAsColor")
+        public void setData(StockModel model) {
+            binding.tvIndexItem.setText(model.getStock_number());
+            binding.tvTopItem.setText(String.valueOf(model.getTotal_quantity()));
+            binding.tvFourItem.setText(String.valueOf(model.getPrice_per_unit()));
+            binding.tvEndItem.setText(model.getPurchased_date());
+            binding.tvEndItem.setTextColor(R.color.black);
+            binding.cbItem.setChecked(model.isChecked());
         }
 
     }
@@ -113,20 +167,53 @@ public class ProductionAdapter extends BaseRecyclerViewAdapter {
             if (model.getRaw_material_id() > 0) {
                 binding.tvTopItem.setText(model.getRaw_material_name());
                 binding.tvFourItem.setText(String.valueOf(model.getTotal_quantity()));
-                binding.tvEndItem.setText("Details");
+                binding.tvEndItem.setText(model.getTotal_quantity().contains("KG") ? "Choose stock" : "Details");
                 binding.tvEndItem.getPaint().setUnderlineText(true);
                 binding.tvEndItem.setOnClickListener(this);
 
-            } else if (model.getPurchased_date()!=null){
-                binding.tvTopItem.setText(String.valueOf(model.getQuantity()));
+            } else if (model.getPurchased_date() != null) {
+                binding.tvIndexItem.setText(model.getStock_number());
+                binding.tvTopItem.setText(String.valueOf(model.getTotal_quantity()));
                 binding.tvFourItem.setText(String.valueOf(model.getPrice_per_unit()));
                 binding.tvEndItem.setText(model.getPurchased_date());
                 binding.tvEndItem.setTextColor(R.color.black);
 
-            }else {
+            } else {
                 binding.tvTopItem.setText(model.getRaw_material_name());
                 binding.tvFourItem.setText(String.valueOf(model.getTotal_quantity()));
             }
+        }
+    }
+
+    public class ProductBatchViewHolder extends BaseRecyclerViewHolder {
+        LayoutItemBatchBinding binding;
+
+        @Override
+        protected BaseRecyclerViewHolder populateView() {
+            return null;
+        }
+
+        public ProductBatchViewHolder(LayoutItemBatchBinding view) {
+            super(view, true);
+            binding = view;
+        }
+
+        @Override
+        public void onClick(View v) {
+            super.onClick(v);
+            if (getItemClickListener() != null)
+                getItemClickListener().onRecyclerViewItemClick(this);
+        }
+
+        public void filterData(BatchModel batchModel) {
+            if (batchModel.getBatch_number()!=null){
+                binding.tvItemName.setText(batchModel.getBatch_number());
+            }
+            else {
+                binding.tvItemName.setText(batchModel.getName());
+            }
+
+            binding.ivIcon.setOnClickListener(this);
         }
     }
 

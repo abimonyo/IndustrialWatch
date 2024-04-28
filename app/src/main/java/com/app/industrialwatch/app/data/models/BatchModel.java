@@ -5,6 +5,8 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class BatchModel implements BaseItem {
+    @SerializedName("name")
+    @Expose
     String name;
     @SerializedName("batch_number")
     @Expose
@@ -12,8 +14,19 @@ public class BatchModel implements BaseItem {
     @SerializedName("product_number")
     @Expose
     String product_number;
+    @SerializedName("status")
+    @Expose
+    int status;
 
     public BatchModel() {
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     public String getBatch_number() {

@@ -44,6 +44,13 @@ public class BaseActivity extends AppCompatActivity {
         });
     }
 
+    public void setPrimaryActionBar(Toolbar toolbar, String title, View.OnClickListener callBack) {
+        TextView tvTitle = toolbar.findViewById(R.id.toolbar_title);
+        if (tvTitle != null && title != null)
+            tvTitle.setText(title);
+        findViewById(R.id.arrow_button).setOnClickListener(callBack);
+    }
+
     public void setSecondaryActionBar(Toolbar toolbar, String title) {
         TextView tvTitle = toolbar.findViewById(R.id.tv_title_secondary);
         if (tvTitle != null && title != null)
@@ -53,15 +60,18 @@ public class BaseActivity extends AppCompatActivity {
         });
 
     }
-    public void hideView(View view){
+
+    public void hideView(View view) {
         view.setVisibility(View.GONE);
     }
-    public void setRecyclerViewHeader(String first,String Second,String third,String four){
+
+    public void setRecyclerViewHeader(String first, String Second, String third, String four) {
         findTextViewById(R.id.tv_index_item).setText(first);
         findTextViewById(R.id.tv_top_item).setText(Second);
         findTextViewById(R.id.tv_four_item).setText(third);
         findTextViewById(R.id.tv_end_item).setText(four);
     }
+
     public TextView findTextViewById(int resourceId) {
         return (TextView) findViewById(resourceId);
     }
@@ -116,9 +126,19 @@ public class BaseActivity extends AppCompatActivity {
         call.enqueue(callback);
     }
 
-    public void doPostRequest(String url, Map<String, String> params, Callback<ResponseBody> callback) {
+    public void doPostRequest(String url, Map<String, Object> params, Callback<ResponseBody> callback) {
         Call<ResponseBody> call = RetrofitClient.getRetrofitInstance().create(ApiService.class).doPostRequest(url, params);
         call.enqueue(callback);
+    }
+
+    public void showErrorMessage(Response<ResponseBody> response) {
+        try {
+            JSONObject object = new JSONObject(response.errorBody().string());
+            showToast(object.getString("message"));
+        } catch (IOException|JSONException e) {
+            Log.d("error==>>", e.getMessage());
+        }
+
     }
 
 }

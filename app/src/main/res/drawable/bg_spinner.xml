@@ -7,4 +7,5 @@
     <item
         android:drawable="@drawable/baseline_keyboard_arrow_down_24"
         android:gravity="end|center_vertical" />
+
 </layer-list>

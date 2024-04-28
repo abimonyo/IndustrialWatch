@@ -17,6 +17,7 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.industrialwatch.R;
@@ -72,7 +73,7 @@ public class InventoryActivity extends BaseRecyclerViewActivity implements Callb
     }
 
     private void initView() {
-        setRecyclerViewHeader("#","Material","Quantity","");
+        setRecyclerViewHeader("#", "Material", "Quantity", "");
         binding.includedLayout.btnAddSection.setText(getString(R.string.add_stock));
         binding.includedLayout.btnAddSection.setOnClickListener(this);
         rawMaterialModelsList = new ArrayList<>();
@@ -95,9 +96,9 @@ public class InventoryActivity extends BaseRecyclerViewActivity implements Callb
             try {
                 if (call.request().url().url().toString().contains(GET_ALL_INVENTORY)) {
                     JSONArray array = new JSONArray(response.body().string());
-                     inventoryList = new Gson().fromJson(array.toString(), new TypeToken<List<StockModel>>() {
+                    AppConstants.VIEW_FOR_DETAIL_OR_FOR_ITEM=BaseItem.ITEM_INVENTORY;
+                    inventoryList = new Gson().fromJson(array.toString(), new TypeToken<List<StockModel>>() {
                     }.getType());
-//                    AppConstants.VIEW_FOR_DETAIL_OR_FOR_ITEM=BaseItem.ITEM_INVENTORY;
                     if (adapter == null) {
                         adapter = new ProductionAdapter(inventoryList, this);
                         setAdapter(adapter);
@@ -134,9 +135,9 @@ public class InventoryActivity extends BaseRecyclerViewActivity implements Callb
         if (inventoryList.size() > 0) {
             StockModel model = (StockModel) inventoryList.get(holder.getLayoutPosition());
             Bundle bundle = new Bundle();
-            bundle.putString(AppConstants.FROM, "inventory");
+            bundle.putString("name", model.getRaw_material_name());
             bundle.putInt(AppConstants.BUNDLE_KEY, model.getRaw_material_id());
-            startActivity(bundle, SectionActivity.class);
+            startActivity(bundle, InventroyDetailActivity.class);
         }
     }
 
@@ -156,6 +157,8 @@ public class InventoryActivity extends BaseRecyclerViewActivity implements Callb
 
         AlertDialog.Builder builder = new AlertDialog.Builder(InventoryActivity.this);
         View customLayout = getLayoutInflater().inflate(R.layout.layout_dialoge_new_material, null);
+        customLayout.findViewById(R.id.sp_unit).setVisibility(View.GONE);
+        //customLayout.findTextViewById(R.id.tv_quantity).setText()
         if (rawMaterialModelsList != null && rawMaterialModelsList.size() > 0) {
             Spinner spinner = customLayout.findViewById(R.id.sp_name);
             spinner.setSelected(false);  // must
@@ -165,11 +168,6 @@ public class InventoryActivity extends BaseRecyclerViewActivity implements Callb
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinner.setAdapter(adapter);
         }
-        Spinner spinnerUnit = customLayout.findViewById(R.id.sp_unit);
-        spinnerUnit.setSelected(false);  // must
-        spinnerUnit.setSelection(0, true);  //must
-        spinnerUnit.setOnItemSelectedListener(this);
-        spinnerUnit.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.unit_list)));
         builder.setView(customLayout);
         AlertDialog dialog = builder.create();
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
@@ -182,8 +180,7 @@ public class InventoryActivity extends BaseRecyclerViewActivity implements Callb
                     try {
                         object.put("raw_material_id", selectedRawMaterialId);
                         object.put("quantity", Integer.parseInt(getValueFromField(customLayout.findViewById(R.id.et_quantity))));
-                        object.put("unit", selectedUnit);
-                        object.put("price_per_unit", Integer.parseInt(getValueFromField(customLayout.findViewById(R.id.et_price))));
+                        object.put("price_per_kg", Integer.parseInt(getValueFromField(customLayout.findViewById(R.id.et_price))));
                         RequestBody body = RequestBody.create(object.toString(), MediaType.get("application/json; charset=utf-8"));
 
                         doPostRequest(INSERT_STOCK, body, InventoryActivity.this);
@@ -208,8 +205,6 @@ public class InventoryActivity extends BaseRecyclerViewActivity implements Callb
         Spinner spinner = (Spinner) parent;
         if (spinner.getId() == R.id.sp_name) {
             selectedRawMaterialId = rawMaterialModelsList.get(position).getId();
-        } else if (spinner.getId() == R.id.sp_unit) {
-            selectedUnit = spinner.getSelectedItem().toString();
         }
     }
 

@@ -50,7 +50,7 @@ public class ProductionDashboardActivity extends AppCompatActivity implements Vi
         } else if ((int) v.getTag() == 2) {
             startActivity(new Intent(getApplicationContext(), InventoryActivity.class));
         } else if ((int) v.getTag() == 3) {
-            startActivity(new Intent(getApplicationContext(), ProductionActivity.class));
+            startActivity(new Intent(getApplicationContext(), LinkedProductActivity.class));
         }
     }
 }

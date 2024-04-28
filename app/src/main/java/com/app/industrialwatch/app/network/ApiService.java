@@ -14,6 +14,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 import retrofit2.http.Url;
 
@@ -32,5 +33,8 @@ public interface ApiService {
 
     @Headers("Content-Type: application/json")
     @POST
-    Call<ResponseBody> doPostRequest(@Url String url, @QueryMap Map<String, String> queryParams);
+    Call<ResponseBody> doPostRequest(@Url String url, @QueryMap Map<String, Object> queryParams);
+
+    @GET
+    Call<ResponseBody> downloadFile(@Url String url,@QueryMap Map<String, String> queryParams);
 }
