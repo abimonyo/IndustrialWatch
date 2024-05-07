@@ -20,7 +20,7 @@ public class JsonUtil {
         return jsonObject;
     }
 
-    public static JSONArray renameObjectsKeyInAllArray(JSONArray originalArray,String key) {
+    public static JSONArray renameObjectsKeyInAllArray(JSONArray originalArray, String key, int rawMaterialId) {
         JSONArray newArray = new JSONArray();
         try {
             for (int i = 0; i < originalArray.length(); i++) {
@@ -28,6 +28,7 @@ public class JsonUtil {
                 String originalKey = originalObj.keys().next();
                 JSONArray valueArray = originalObj.getJSONArray(originalKey);
                 JSONObject newObj = new JSONObject();
+                newObj.put("raw_material_id", originalKey);
                 newObj.put(key, valueArray);
                 newArray.put(newObj);
             }

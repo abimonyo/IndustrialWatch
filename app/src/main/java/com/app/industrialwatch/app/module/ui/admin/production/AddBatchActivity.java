@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -58,7 +59,7 @@ public class AddBatchActivity extends BaseRecyclerViewActivity implements View.O
 
     List<BaseItem> formulaList;
     JSONArray stockList;
-
+    Dialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +86,8 @@ public class AddBatchActivity extends BaseRecyclerViewActivity implements View.O
         super.onResume();
         adapter = null;
         setAdapter(adapter);
+        dialog = getProgressDialog(false);
+        showProgressDialog(dialog);
         doGetRequest(GET_PRODUCT_FORMULA, getServerParam(), this);
     }
 
@@ -101,11 +104,15 @@ public class AddBatchActivity extends BaseRecyclerViewActivity implements View.O
             binding.etBachPerDay.requestFocus();
             return;
         }
+        if (stockList != null && formulaList != null && stockList.length() != formulaList.size()) {
+            showToast("Please select stock.");
+            return;
+        }
         JSONObject object = new JSONObject();
         try {
             object.put("batch_per_day", Integer.parseInt(getValueFromField(binding.etBachPerDay)));
             object.put("product_number", bundle.getString(AppConstants.KEY_NUMBER));
-            object.put("stock_list", JsonUtil.renameObjectsKeyInAllArray(stockList, "stocks"));
+            object.put("stock_list", JsonUtil.renameObjectsKeyInAllArray(stockList, "stocks", 1));
             Log.d("op==>>", object.toString());
             creatAndCallApi(object);
         } catch (JSONException e) {
@@ -116,6 +123,7 @@ public class AddBatchActivity extends BaseRecyclerViewActivity implements View.O
 
     private void creatAndCallApi(JSONObject object) {
         RequestBody body = RequestBody.create(object.toString(), MediaType.get("application/json; charset=utf-8"));
+        showProgressDialog(dialog);
         doPostRequest(AppConstants.CREATE_BATCH, body, this);
 
     }
@@ -137,25 +145,28 @@ public class AddBatchActivity extends BaseRecyclerViewActivity implements View.O
                 } else if (call.request().url().url().toString().contains(AppConstants.CREATE_BATCH)) {
                     JSONObject object = new JSONObject(response.body().string());
                     showToast(object.getString("message"));
+                    finish();
                 }
             } catch (IOException | JSONException e) {
                 Log.d("error==>>", e.getMessage());
             }
-        }else {
+        } else {
             try {
                 JSONObject object = new JSONObject(response.errorBody().string());
                 showToast(object.getString("message"));
-            } catch (IOException |JSONException e) {
+            } catch (IOException | JSONException e) {
                 Log.d("error==>>", e.getMessage());
 
             }
         }
+        cancelDialog(dialog);
     }
 
     @Override
     public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+        cancelDialog(dialog);
         Log.d("error==>>", t.getMessage());
+        showToast("Failed: "+t.getMessage());
     }
 
     @Override
@@ -184,7 +195,6 @@ public class AddBatchActivity extends BaseRecyclerViewActivity implements View.O
                             String key = object.keys().next();
                             String id = bundle.getInt(AppConstants.BUNDLE_KEY, 0) + "";
                             insertToStock(object);
-                            showToast(key + id);
                         } catch (JSONException e) {
                             Log.d("error==>>", e.getMessage());
                         }

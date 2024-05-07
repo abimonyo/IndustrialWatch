@@ -13,56 +13,113 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_below="@+id/toolbar"
-            >
+            android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/et_supervisor_name"
-                style="@style/EditTextStyle"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="22dp"
-                android:layout_marginTop="32dp"
-                android:layout_marginEnd="22dp"
-                android:background="@drawable/bg_grey"
-                android:hint="@string/enter_name"
-                android:textColorHint="@color/hint_color" />
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="16dp"
+                android:orientation="vertical"
+                android:visibility="gone">
 
-            <EditText
-                android:id="@+id/et_supervisor_username"
-                style="@style/EditTextStyle"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_semi_bold"
+                    android:text="@string/name"
+                    android:textSize="16sp" />
+
+
+                <EditText
+                    android:id="@+id/et_supervisor_name"
+                    style="@style/EditTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/bg_grey"
+                    android:hint="@string/enter_name"
+                    android:textColorHint="@color/hint_color" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="22dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="22dp"
-                android:background="@drawable/bg_grey"
-                android:hint="@string/enter_username"
-                android:textColorHint="@color/hint_color" />
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="16dp"
+                android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/et_supervisor_password"
-                style="@style/EditTextStyle"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_semi_bold"
+                    android:text="@string/username"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/et_supervisor_username"
+                    style="@style/EditTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="8dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_grey"
+                    android:hint="@string/enter_username"
+                    android:textColorHint="@color/hint_color" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="22dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="22dp"
-                android:background="@drawable/bg_grey"
-                android:hint="@string/enter_password"
-                android:textColorHint="@color/hint_color" />
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="16dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_semi_bold"
+                    android:text="@string/password"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/et_supervisor_password"
+                    style="@style/EditTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/bg_grey"
+                    android:hint="@string/enter_password"
+                    android:textColorHint="@color/hint_color" />
+            </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="16dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_semi_bold"
+                android:text="@string/section"
+                android:textSize="16sp" />
+
             <Spinner
+                android:id="@+id/section_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:background="@drawable/bg_grey"
-                android:layout_marginStart="22dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="22dp"
-                android:id="@+id/section_spinner"
-                android:padding="15dp"
-                />
+                android:padding="15dp" />
         </LinearLayout>
+        </LinearLayout>
+
         <Button
             android:id="@+id/btn_add_batch"
             style="@style/ButtonPrimaryStyle"

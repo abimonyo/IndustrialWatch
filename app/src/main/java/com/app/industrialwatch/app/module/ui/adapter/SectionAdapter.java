@@ -63,16 +63,16 @@ public class SectionAdapter extends BaseRecyclerViewAdapter {
             ((ViewRulesHolder) holder).binding.tvEndItem.setText(model.getFineAsRS());
             ((ViewRulesHolder) holder).binding.executePendingBindings();
         } else if (holder instanceof RuleHolder) {
+            ((RuleHolder) holder).binding.setModel((RulesModel) getItemAt(position));
+            ((RuleHolder) holder).binding.executePendingBindings();
             ((RuleHolder) holder).checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 RulesModel model = (RulesModel) getItemAt(position);
                 model.setChecked(isChecked);
                 holder.onClick(buttonView);
             });
-           /* if ((RulesModel) getItemAt(position) != null) {
-                ((RuleHolder) holder).fillData((RulesModel) getItemAt(position));
-            }*/
-            ((RuleHolder) holder).binding.setModel((RulesModel) getItemAt(position));
-            ((RuleHolder) holder).binding.executePendingBindings();
+            if (((RulesModel) getItemAt(position)).isChecked()) {
+                ((RuleHolder) holder).onClick(((RuleHolder) holder).checkBox);
+            }
         }
     }
 
@@ -83,6 +83,8 @@ public class SectionAdapter extends BaseRecyclerViewAdapter {
             super(view.getRoot(), true);
             binding = view;
             view.getRoot().setOnClickListener(this);
+            binding.sectionDelete.setOnClickListener(this);
+
 
         }
 
@@ -94,7 +96,10 @@ public class SectionAdapter extends BaseRecyclerViewAdapter {
         @Override
         public void onClick(View v) {
             super.onClick(v);
-            if (getItemClickListener() != null)
+            if (v.getId() == R.id.sectionDelete) {
+                if (getItemClickListener() != null)
+                    getItemClickListener().onRecyclerViewChildItemClick(this, R.id.sectionDelete);
+            } else if (getItemClickListener() != null)
                 getItemClickListener().onRecyclerViewItemClick(SectionHolder.this);
         }
     }

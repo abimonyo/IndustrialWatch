@@ -28,6 +28,8 @@
             android:layout_marginTop="18dp"
             android:fontFamily="@font/inter_medium"
             android:text="@string/section"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:textSize="18sp"
             android:textColor="@color/faded_text_color"
             android:id="@+id/tv_grid_item"/>

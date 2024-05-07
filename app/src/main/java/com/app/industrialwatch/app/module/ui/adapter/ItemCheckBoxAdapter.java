@@ -12,26 +12,30 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.app.industrialwatch.R;
+import com.app.industrialwatch.app.business.BaseItem;
+import com.app.industrialwatch.app.data.models.SectionModel;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ItemCheckBoxAdapter extends ArrayAdapter<String> {
+public class ItemCheckBoxAdapter extends ArrayAdapter<BaseItem> {
     View.OnClickListener listener;
     String[] itemList;
+    List<BaseItem> baseItemsList;
     Context context;
     Map<Integer, Boolean> itemStates;
 
-    public ItemCheckBoxAdapter(Context context, String[] itemList, View.OnClickListener listener1) {
-        super(context, R.layout.layout_item_program, itemList);
+    public ItemCheckBoxAdapter(Context context, List<BaseItem> baseItems, View.OnClickListener listener1) {
+        super(context, R.layout.layout_item_program, baseItems);
         this.context = context;
         listener = listener1;
         this.itemList = itemList;
-        itemStates = new HashMap<>();
+        baseItemsList = baseItems;
+        /*itemStates = new HashMap<>();
         for (int i = 0; i < itemList.length; i++) {
             itemStates.put(i, false);
-        }
+        }*/
     }
 
     @NonNull
@@ -52,20 +56,26 @@ public class ItemCheckBoxAdapter extends ArrayAdapter<String> {
         TextView textView = rowView.findViewById(R.id.text);
         CheckBox checkBox = rowView.findViewById(R.id.checkbox);
 
-        final String currentItem = itemList[position];
+        // final String currentItem = itemList[position];
+        SectionModel sectionModel = (SectionModel) baseItemsList.get(position);
 
         // Set text to TextView
-        textView.setText(currentItem);
-        checkBox.setChecked(itemStates.get(position));
-
+        textView.setText(sectionModel.getSectionName());
+        checkBox.setChecked(sectionModel.isChecked());
+        if (checkBox.isChecked()) {
+            String result = checkBox.isChecked() + "," + sectionModel.getSectionName() + "," + sectionModel.getId();
+            parent.getRootView().setTag(result);
+            listener.onClick(parent.getRootView());
+        }
 
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 CheckBox checkBox = (CheckBox) buttonView;
-                itemStates.put(position, isChecked);
+                /*itemStates.put(position, isChecked);*/
+                sectionModel.setChecked(isChecked);
                 View view = buttonView.getRootView();
-                String result = checkBox.isChecked() + "," + currentItem;
+                String result = checkBox.isChecked() + "," + sectionModel.getSectionName() + "," + sectionModel.getId();
                 view.setTag(result);
                 listener.onClick(view);
                 notifyDataSetChanged();

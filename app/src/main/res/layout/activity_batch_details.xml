@@ -43,9 +43,8 @@
                     android:fontFamily="@font/inter_medium"
                     android:text="Rejected"
                     android:gravity="center"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:background="@drawable/bg_dialogue"
-                    android:backgroundTint="@color/green"
                     android:padding="10dp"
                     android:textSize="20sp" />
 

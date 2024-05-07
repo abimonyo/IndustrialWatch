@@ -2,33 +2,35 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/transparent"
     android:layout_margin="22dp"
     android:layout_marginTop="8dp"
-   >
+    android:background="@color/transparent">
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/baseline_arrow_back_24"
-        android:layout_alignParentStart="true"
         android:id="@+id/iv_back"
-        android:visibility="visible"
-        android:layout_marginEnd="20dp"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginEnd="20dp"
+        android:src="@drawable/baseline_arrow_back_24"
+        android:visibility="visible" />
+
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/admin_dashboard"
-        android:textSize="22sp"
-        android:fontFamily="@font/inter_semi_bold"
-        android:textColor="@color/white_smoke"
         android:id="@+id/dashboard_title"
-        android:layout_toRightOf="@+id/iv_back"/>
-    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_logout"
+        android:layout_toRightOf="@+id/iv_back"
+        android:fontFamily="@font/inter_semi_bold"
+        android:gravity="center"
+        android:text="@string/admin_dashboard"
+        android:textColor="@color/black"
+        android:textSize="20sp" />
+
+    <ImageView
+        android:id="@+id/iv_logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:id="@+id/iv_logout"/>
+        android:src="@drawable/ic_logout" />
 
 </RelativeLayout>

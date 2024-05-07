@@ -207,6 +207,10 @@ public class ProductionAdapter extends BaseRecyclerViewAdapter {
 
         public void filterData(BatchModel batchModel) {
             if (batchModel.getBatch_number()!=null){
+                if (batchModel.getStatus()==1)
+                    binding.layoutWrapper.setBackgroundResource(R.color.red);
+                else if (batchModel.getStatus()==0)
+                    binding.layoutWrapper.setBackgroundResource(R.color.green);
                 binding.tvItemName.setText(batchModel.getBatch_number());
             }
             else {

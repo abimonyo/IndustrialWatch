@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -59,6 +60,7 @@ public class ProductActivity extends BaseRecyclerViewActivity implements View.On
     ProductionAdapter adapter;
     List<BaseItem> rawBaseList;
     String selectedMaterialName;
+    Dialog dialog;
 
     @Override
 
@@ -79,13 +81,22 @@ public class ProductActivity extends BaseRecyclerViewActivity implements View.On
     protected void onResume() {
         super.onResume();
         adapter = null;
+        dialog = getProgressDialog(false);
+        showProgressDialog(dialog);
         doGetRequest(AppConstants.GET_ALL_RAW_MATERIAL, this);
     }
 
     private void setAnglesSpinner() {
         rawMap = new HashMap<>();
         checkedAnglesList = new ArrayList<>();
-        ItemCheckBoxAdapter adapter = new ItemCheckBoxAdapter(this, getResources().getStringArray(R.array.angles_list), new View.OnClickListener() {
+        List<BaseItem> anglesList = new ArrayList<>();
+        anglesList.add(new SectionModel(1, "1 Top"));
+        anglesList.add(new SectionModel(1, "2 Flip"));
+        anglesList.add(new SectionModel(1, "3 Right"));
+        anglesList.add(new SectionModel(1, "4 Left"));
+        anglesList.add(new SectionModel(1, "5 Front"));
+        anglesList.add(new SectionModel(1, "6 Back"));
+        ItemCheckBoxAdapter adapter = new ItemCheckBoxAdapter(this, anglesList, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String result = (String) v.getTag();
@@ -158,13 +169,13 @@ public class ProductActivity extends BaseRecyclerViewActivity implements View.On
                 newRawMap.put("name", rawMap.get("name"));
                 newRawMap.put("raw_material_id", rawMap.get("raw_material_id"));
                 newRawMap.put("quantity", Integer.parseInt(getValueFromField(customLayout.findViewById(R.id.et_quantity))));
-                newRawMap.put("unit",rawMap.get("unit"));
+                newRawMap.put("unit", rawMap.get("unit"));
                 selectedRawMaterilList.add(newRawMap);
                 StockModel model = new StockModel();
                 model.setRaw_material_name((String) rawMap.get("name"));
                 model.setTotal_quantity(getValueFromField(customLayout.findViewById(R.id.et_quantity)));
                 rawBaseList.add(model);
-                AppConstants.VIEW_FOR_DETAIL_OR_FOR_ITEM=BaseItem.ITEM_INVENTORY;
+                AppConstants.VIEW_FOR_DETAIL_OR_FOR_ITEM = BaseItem.ITEM_INVENTORY;
                 adapter = new ProductionAdapter(rawBaseList, null);
                 setAdapter(adapter);
                 rawMap.clear();
@@ -197,19 +208,23 @@ public class ProductActivity extends BaseRecyclerViewActivity implements View.On
             } catch (IOException | JSONException e) {
                 Log.d("error==>>", e.getMessage());
             }
-        }
+        } else
+            showErrorMessage(response);
+        cancelDialog(dialog);
     }
 
     @Override
     public void onFailure(Call<ResponseBody> call, Throwable t) {
         Log.d("erro==>>", t.getMessage());
+        cancelDialog(dialog);
+        showToast("Failed: Try again.");
     }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         Spinner spinner = (Spinner) parent;
         if (spinner.getId() == R.id.sp_name) {
-            rawMap.put("name",rawMaterialModelsList.get(position).getName());
+            rawMap.put("name", rawMaterialModelsList.get(position).getName());
             rawMap.put("raw_material_id", rawMaterialModelsList.get(position).getId());
         } else if (spinner.getId() == R.id.sp_unit) {
             rawMap.put("unit", spinner.getSelectedItem().toString());

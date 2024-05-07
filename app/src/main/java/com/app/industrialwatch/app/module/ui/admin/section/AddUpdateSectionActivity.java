@@ -3,8 +3,10 @@ package com.app.industrialwatch.app.module.ui.admin.section;
 import static com.app.industrialwatch.common.utils.AppConstants.GET_ALL_RULES_URL;
 import static com.app.industrialwatch.common.utils.AppConstants.GET_SECTION_DETAIL;
 import static com.app.industrialwatch.common.utils.AppConstants.INSERT_SECTION;
+import static com.app.industrialwatch.common.utils.AppConstants.UPDATE_SECTION;
 import static com.app.industrialwatch.common.utils.AppUtils.validateEmptyEditText;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -35,6 +37,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.function.Predicate;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -51,6 +55,7 @@ public class AddUpdateSectionActivity extends BaseRecyclerViewActivity implement
     EditText etAllowedTime;
     List<BaseItem> ruleNameList;
     private boolean isManualChange = false;
+    Dialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,10 +81,12 @@ public class AddUpdateSectionActivity extends BaseRecyclerViewActivity implement
         super.onResume();
         adapter = null;
         setAdapter(null);
+        dialog = getProgressDialog(false);
+        showProgressDialog(dialog);
         doGetRequest(GET_ALL_RULES_URL, this);
         if (bundle != null) {
             binding.toolbar.toolbarTitle.setText(getString(R.string.edit_section));
-            doGetRequest(GET_SECTION_DETAIL, getServerParams(), this);
+
         }
     }
 
@@ -94,22 +101,30 @@ public class AddUpdateSectionActivity extends BaseRecyclerViewActivity implement
         RulesModel model = (RulesModel) adapter.getItemAt(holder.getLayoutPosition());
         EditText etFine = holder.itemView.findViewById(R.id.et_rule_item_fine);
         etAllowedTime = holder.itemView.findViewById(R.id.et_rule_item_time);
-        etAllowedTime.setFilters(new InputFilter[]{new InputFilter.LengthFilter(5)});
-        etAllowedTime.addTextChangedListener(this);
+       /* etAllowedTime.setFilters(new InputFilter[]{new InputFilter.LengthFilter(5)});
+        etAllowedTime.addTextChangedListener(this);*/
         CheckBox checkBox = holder.itemView.findViewById(R.id.cb_rule_item);
-        if (!validateEmptyEditText(etFine) || !validateEmptyEditText(etAllowedTime)) {
-            showToast("please fill required fields.");
-            checkBox.setChecked(false);
-        }
-        if (checkBox.isChecked()) {
-            model.setAllowedTime(getValueFromField(etAllowedTime));
-            model.setFine(Double.parseDouble(getValueFromField(etFine)));
-            insertedRuleList.add(model);
+        if (model.getAllowedTime() != null && model.getFine() != null) {
+            if (checkBox.isChecked()) {
+                if (!isRuleExist(model))
+                    insertedRuleList.add(model);
+            } else
+                insertedRuleList.remove(model);
+        } else if (validateEmptyEditText(etFine) && validateEmptyEditText(etAllowedTime)) {
+            if (checkBox.isChecked()) {
+                model.setAllowedTime(getValueFromField(etAllowedTime));
+                model.setFine(Double.parseDouble(getValueFromField(etFine)));
+                insertedRuleList.add(model);
+            } else {
+                insertedRuleList.remove(model);
+            }
         } else {
-            insertedRuleList.remove(model);
+            showToast("Please fill required fields");
+            checkBox.setChecked(false);
         }
 
     }
+
 
     @Override
     public void onRecyclerViewChildItemClick(BaseRecyclerViewHolder holder, int resourceId) {
@@ -129,6 +144,8 @@ public class AddUpdateSectionActivity extends BaseRecyclerViewActivity implement
                         adapter = new SectionAdapter(ruleNameList, this);
                         setAdapter(adapter);
                     }
+                    if (bundle != null)
+                        doGetRequest(GET_SECTION_DETAIL, getServerParams(), this);
                 } else if (call.request().url().url().toString().contains(GET_SECTION_DETAIL)) {
                     JSONObject object = new JSONObject(response.body().string());
                     binding.etSectionName.setText(object.getString("name"));
@@ -142,7 +159,9 @@ public class AddUpdateSectionActivity extends BaseRecyclerViewActivity implement
                 Log.d("error==>", e.getMessage());
             }
 
-        }
+        } else
+            showErrorMessage(response);
+        cancelDialog(dialog);
 
     }
 
@@ -150,62 +169,99 @@ public class AddUpdateSectionActivity extends BaseRecyclerViewActivity implement
     @Override
     public void onFailure(Call<ResponseBody> call, Throwable t) {
         Log.d("error==>", t.getMessage());
+        cancelDialog(dialog);
+        showToast("Failed: try again.");
     }
 
     private void checkAndMapRules(List<BaseItem> list) {
-        if (ruleNameList != null && adapter != null) {
+        if (ruleNameList != null && adapter != null && ruleNameList.size() > 0) {
             for (int i = 0; i < ruleNameList.size(); i++) {
                 RulesModel rule1 = (RulesModel) ruleNameList.get(i);
                 for (int j = 0; j < list.size(); j++) {
                     RulesModel rule2 = (RulesModel) list.get(j);
-                    // Check if the rule names match
                     if (rule1.getName().equals(rule2.getName())) {
-                        ruleNameList.remove(rule1);
-                        rule2.setChecked(true); // Update isChecked field
-                        ruleNameList.add(rule2);
-                        //break; // No need to continue checking once a match is found
+                        rule2.setChecked(true);
+                        ruleNameList.set(i, rule2);
+                        break;
                     }
                 }
             }
-           // adapter.addAll(ruleNameList);
+            adapter.notifyDataSetChanged();
         }
+    }
+
+    private boolean isRuleExist(RulesModel model) {
+        Predicate<RulesModel> predicate = existingModel -> existingModel.getId() == model.getId();
+        return insertedRuleList.stream().anyMatch(predicate);
     }
 
     @Override
     public void onClick(View v) {
         if (v.getId() == binding.btnAddSection.getId()) {
-            if (bundle == null) {
-                if (insertedRuleList.size() > 0) {
-                    String sectionName = getValueFromField(binding.etSectionName);
-                    JSONObject requestJson = new JSONObject();
-                    try {
+            if (insertedRuleList.size() > 0) {
+                String sectionName = getValueFromField(binding.etSectionName);
+                JSONObject requestJson = new JSONObject();
+                try {
 
-                        requestJson.put("name", sectionName);
-                        JSONArray jsonArray = new JSONArray();
-                        for (RulesModel rules : insertedRuleList) {
-                            JSONObject object = new JSONObject();
-                            object.put("rule_id", rules.getId());
-                            object.put("allowed_time", rules.getAllowedTime());
-                            object.put("fine", rules.getFine());
-                            jsonArray.put(object);
-                        }
-                        requestJson.put("rules", jsonArray);
+                    requestJson.put("name", sectionName);
+                    JSONArray jsonArray = new JSONArray();
+                    for (RulesModel rules : insertedRuleList) {
+                        JSONObject object = new JSONObject();
+                        object.put("rule_id", rules.getId());
+                        object.put("allowed_time", rules.getAllowedTime());
+                        object.put("fine", rules.getFine());
+                        jsonArray.put(object);
+                    }
+                    requestJson.put("rules", jsonArray);
+                    if (bundle == null) {
                         RequestBody body = RequestBody.create(requestJson.toString(), MediaType.get("application/json; charset=utf-8"));
-                        insertSection(body);
-                    } catch (JSONException e) {
+                        showProgressDialog(dialog);
+                        insertSection(body, INSERT_SECTION);
+                    } else if (Objects.requireNonNull(bundle.getString(AppConstants.FROM)).equals("SectionDetails")) {
+                        requestJson.put("id", bundle.getInt("id", 0));
+                        RequestBody body = RequestBody.create(requestJson.toString(), MediaType.get("application/json; charset=utf-8"));
+                        showProgressDialog(dialog);
+                        updateSection(body, UPDATE_SECTION);
+
+                    }
+                } catch (JSONException e) {
+                    Log.d("error==>>", e.getMessage());
+                }
+            } else
+                showToast("No, rule selected.");
+        }
+
+    }
+
+    private void updateSection(RequestBody body, String url) {
+        doPutRequest(url, body, new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    try {
+                        JSONObject responseObject = new JSONObject(response.body().string());
+                        showToast(responseObject.getString("message"));
+                        finish();
+                    } catch (IOException | JSONException e) {
                         Log.d("error==>>", e.getMessage());
                     }
                 } else
-                    showToast("No, rule selected.");
-            } else if (bundle != null && bundle.getString(AppConstants.FROM).equals("SectionDetails")) {
+                    showErrorMessage(response);
+                cancelDialog(dialog);
+            }
 
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                cancelDialog(dialog);
+                Log.d("error==>>", t.getMessage());
+                showToast("Failed: Try again.");
 
             }
-        }
+        });
     }
 
-    private void insertSection(RequestBody object) {
-        doPostRequest(INSERT_SECTION, object, new Callback<ResponseBody>() {
+    private void insertSection(RequestBody object, String url) {
+        doPostRequest(url, object, new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
@@ -216,13 +272,18 @@ public class AddUpdateSectionActivity extends BaseRecyclerViewActivity implement
                     } catch (JSONException | IOException e) {
                         Log.d("error==>>", e.getMessage());
                     }
-                } else
+                } else {
                     Log.d("error==>>", "not success");
+                    showErrorMessage(response);
+                }
+                cancelDialog(dialog);
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Log.d("error==>>", t.getMessage());
+                cancelDialog(dialog);
+                showToast("Failed: Try again.");
             }
         });
     }
@@ -234,20 +295,18 @@ public class AddUpdateSectionActivity extends BaseRecyclerViewActivity implement
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        if (count == 2) {
-            showToast("sdf");
-        }
+
     }
 
     @Override
     public void afterTextChanged(Editable s) {
-        if (s.length() == 2) {
+    /*    if (s.length() == 2) {
             String string = etAllowedTime.getText().toString();
             string = string.concat(":");
             etAllowedTime.setText(string);
             etAllowedTime.setSelection(string.length());
 
-        }
+        }*/
 
     }
 }

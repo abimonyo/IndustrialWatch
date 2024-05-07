@@ -1,10 +1,14 @@
 package com.app.industrialwatch.common.base;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -23,9 +27,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -58,6 +65,10 @@ public class BaseActivity extends AppCompatActivity {
         findViewById(R.id.iv_back_toolbar).setOnClickListener(view -> {
             finish();
         });
+
+    }
+
+    public void setDashboardActionBar() {
 
     }
 
@@ -107,6 +118,34 @@ public class BaseActivity extends AppCompatActivity {
 
     }
 
+    public Dialog getProgressDialog(boolean cancelable) {
+        Dialog dialog = new Dialog(this);
+        dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setContentView(R.layout.layout_app_dialoge);
+        dialog.setCancelable(cancelable);
+        return dialog;
+    }
+
+    public void cancelDialog(Dialog dialog) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (dialog != null && dialog.isShowing())
+                    dialog.dismiss();
+            }
+        });
+    }
+
+    public void showProgressDialog(Dialog dialog) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                dialog.show();
+            }
+        });
+    }
+
     public String getValueFromField(EditText etValue) {
         return etValue.getText().toString().trim();
     }
@@ -124,6 +163,9 @@ public class BaseActivity extends AppCompatActivity {
     public void doPostRequest(String url, RequestBody requestObject, Callback<ResponseBody> callback) {
         Call<ResponseBody> call = RetrofitClient.getRetrofitInstance().create(ApiService.class).doPostRequest(url, requestObject);
         call.enqueue(callback);
+    }  public void doPutRequest(String url, RequestBody requestObject, Callback<ResponseBody> callback) {
+        Call<ResponseBody> call = RetrofitClient.getRetrofitInstance().create(ApiService.class).doPutRequest(url, requestObject);
+        call.enqueue(callback);
     }
 
     public void doPostRequest(String url, Map<String, Object> params, Callback<ResponseBody> callback) {
@@ -131,14 +173,24 @@ public class BaseActivity extends AppCompatActivity {
         call.enqueue(callback);
     }
 
+    public void doPostRequestWithMapBody(String url, Map<String, RequestBody> parts, List<MultipartBody.Part> imageParts, Callback<ResponseBody> callback) {
+        Call<ResponseBody> call = RetrofitClient.getRetrofitInstance().create(ApiService.class).doPostRequestWithMapBody(url, parts, imageParts);
+        call.enqueue(callback);
+    }
+
     public void showErrorMessage(Response<ResponseBody> response) {
         try {
             JSONObject object = new JSONObject(response.errorBody().string());
             showToast(object.getString("message"));
-        } catch (IOException|JSONException e) {
+        } catch (IOException | JSONException e) {
             Log.d("error==>>", e.getMessage());
         }
 
+    }
+    public Map<String, String> getParams(String key,String value){
+        Map<String, String> params = new HashMap<>();
+        params.put(key, value);
+        return params;
     }
 
 }

@@ -2,12 +2,16 @@ package com.app.industrialwatch.app.module.ui.admin.production;
 
 import static com.app.industrialwatch.common.utils.AppConstants.BUNDLE_KEY;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -22,12 +26,14 @@ import com.app.industrialwatch.R;
 import com.app.industrialwatch.app.business.BaseItem;
 import com.app.industrialwatch.app.data.models.BatchModel;
 import com.app.industrialwatch.app.module.ui.adapter.ProductionAdapter;
+import com.app.industrialwatch.common.base.TakePhotoActivity;
 import com.app.industrialwatch.common.base.recyclerview.BaseRecyclerViewActivity;
 import com.app.industrialwatch.common.base.recyclerview.BaseRecyclerViewHolder;
 import com.app.industrialwatch.common.base.recyclerview.OnRecyclerViewItemClickListener;
 import com.app.industrialwatch.common.utils.AppConstants;
 import com.app.industrialwatch.common.utils.AppUtils;
 import com.app.industrialwatch.common.utils.DownloadHelper;
+import com.app.industrialwatch.common.utils.PermissionUtils;
 import com.app.industrialwatch.databinding.ActivityBatchBinding;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -51,6 +57,7 @@ public class BatchActivity extends BaseRecyclerViewActivity implements View.OnCl
     Bundle bundle;
     ProductionAdapter adapter;
     List<BaseItem> batchModelList;
+    Dialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,8 +81,13 @@ public class BatchActivity extends BaseRecyclerViewActivity implements View.OnCl
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.btn_download_images) {
-            showToast("hello");
-            downloadDefectedImages();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                if (PermissionUtils.checkAndRequestPermissions(BatchActivity.this
+                        , new String[]{Manifest.permission.POST_NOTIFICATIONS},12))
+                    downloadDefectedImages();
+
+            }else
+                downloadDefectedImages();
         } else
             startActivity(bundle, AddBatchActivity.class);
     }
@@ -85,6 +97,8 @@ public class BatchActivity extends BaseRecyclerViewActivity implements View.OnCl
         super.onResume();
         adapter = null;
         setAdapter(adapter);
+        dialog = getProgressDialog(false);
+        showProgressDialog(dialog);
         doGetRequest(AppConstants.GET_ALL_BATCHES, getServerParams(), this);
     }
 
@@ -108,12 +122,16 @@ public class BatchActivity extends BaseRecyclerViewActivity implements View.OnCl
             } catch (JSONException | IOException e) {
                 throw new RuntimeException(e);
             }
-        }
+        } else
+            showErrorMessage(response);
+        cancelDialog(dialog);
     }
 
     @Override
     public void onFailure(Call<ResponseBody> call, Throwable t) {
         Log.d("error==>>", t.getMessage());
+        cancelDialog(dialog);
+        showToast("Failed: try again.");
     }
 
     @Override
@@ -159,6 +177,14 @@ public class BatchActivity extends BaseRecyclerViewActivity implements View.OnCl
         button.setLayoutParams(params);
         rootView.addView(button, 1);
 
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 12 && PermissionUtils.verifyPermission(grantResults)) {
+            downloadDefectedImages();
+        } else
+            showToast("Notification permission needed before downloading.");
     }
 
 }

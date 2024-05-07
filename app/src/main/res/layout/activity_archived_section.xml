@@ -9,8 +9,7 @@
         android:orientation="vertical">
 
         <include
-            android:id="@+id/layout_included"
-            layout="@layout/activity_production_dashboard" />
-
+            android:id="@+id/included_layout"
+            layout="@layout/activity_section" />
     </LinearLayout>
 </layout>

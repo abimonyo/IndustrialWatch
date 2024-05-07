@@ -15,7 +15,8 @@
             android:background="@drawable/bg_dashboard"
             android:orientation="vertical">
 
-            <include layout="@layout/layout_dashboard_header" />
+            <include layout="@layout/layout_dashboard_header"
+                android:id="@+id/layout_included"/>
 
             <LinearLayout
                 android:layout_width="match_parent"

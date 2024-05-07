@@ -11,6 +11,12 @@ public class SectionModel implements BaseItem {
     @SerializedName("name")
     @Expose
     String name;
+    boolean isChecked;
+    @Override
+    public String toString() {
+        return name; // Or any other property you want to display
+    }
+
 
     public int getId() {
         return id;
@@ -23,6 +29,14 @@ public class SectionModel implements BaseItem {
     public SectionModel(int id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
     }
 
     public String getSectionName() {

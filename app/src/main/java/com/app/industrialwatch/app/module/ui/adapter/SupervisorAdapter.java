@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.databinding.ViewDataBinding;
 
+import com.app.industrialwatch.R;
 import com.app.industrialwatch.app.business.BaseItem;
 import com.app.industrialwatch.app.data.models.SupervisorModel;
 import com.app.industrialwatch.common.base.recyclerview.BaseRecyclerViewAdapter;
@@ -55,6 +56,12 @@ public class SupervisorAdapter extends BaseRecyclerViewAdapter {
         public SupervisorHolder(LayoutItemSupervisorBinding view) {
             super(view.getRoot(), true);
             binding=view;
+        }
+        @Override
+        public void onClick(View v) {
+            super.onClick(v);
+            if (getItemClickListener() != null)
+                getItemClickListener().onRecyclerViewItemClick(this);
         }
     }
     public int getItemViewType(int position) {

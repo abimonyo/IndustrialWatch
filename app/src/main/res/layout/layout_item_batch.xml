@@ -5,23 +5,27 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:orientation="horizontal"
+        android:id="@+id/layout_wrapper"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
         >
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
             android:fontFamily="@font/inter_medium"
             android:text="Batch#11320051123"
             android:textColor="@color/black"
             android:textSize="20sp"
+            android:layout_centerVertical="true"
+
             android:id="@+id/tv_item_name"/>
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="20dp"
+            android:layout_centerVertical="true"
             android:id="@+id/iv_icon"
             android:src="@drawable/baseline_arrow_forward_ios_24" />
 
@@ -29,8 +33,9 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/divider_color_grey"
-            android:layout_alignParentBottom="true"
-            android:layout_margin="20dp"/>
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/tv_item_name"
+            />
     </RelativeLayout>
 
 </layout>

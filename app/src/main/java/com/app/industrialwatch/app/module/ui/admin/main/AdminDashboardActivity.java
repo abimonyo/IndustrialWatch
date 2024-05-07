@@ -16,6 +16,7 @@ import com.app.industrialwatch.app.module.ui.adapter.ProductionAdapter;
 import com.app.industrialwatch.app.module.ui.admin.production.ProductionActivity;
 import com.app.industrialwatch.app.module.ui.admin.production.ProductionDashboardActivity;
 import com.app.industrialwatch.app.module.ui.admin.section.SectionActivity;
+import com.app.industrialwatch.app.module.ui.employee.EmployeeProductivityDashboardActivity;
 import com.app.industrialwatch.app.module.ui.supervisor.SupervisorActivity;
 import com.app.industrialwatch.databinding.ActivityAdminDashboardBinding;
 
@@ -32,6 +33,7 @@ public class AdminDashboardActivity extends AppCompatActivity implements View.On
         super.onCreate(savedInstanceState);
         binding = ActivityAdminDashboardBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        binding.layoutIncluded.ivBack.setVisibility(View.GONE);
         initGridView();
     }
 
@@ -46,7 +48,6 @@ public class AdminDashboardActivity extends AppCompatActivity implements View.On
         gridItemModels.add(new GridItemModel(getString(R.string.employee_productivity), R.drawable.img_emp_prod));
         gridItemModels.add(new GridItemModel(getString(R.string.production), R.drawable.img_production));
         return gridItemModels;
-
     }
 
     @Override
@@ -56,7 +57,7 @@ public class AdminDashboardActivity extends AppCompatActivity implements View.On
         } else if ((int) v.getTag() == 1) {
             startActivity(new Intent(getApplicationContext(), SupervisorActivity.class));
         } else if ((int) v.getTag() == 2) {
-
+            startActivity(new Intent(getApplicationContext(), EmployeeProductivityDashboardActivity.class));
         } else if ((int) v.getTag() == 3) {
             startActivity(new Intent(getApplicationContext(), ProductionDashboardActivity.class));
         }

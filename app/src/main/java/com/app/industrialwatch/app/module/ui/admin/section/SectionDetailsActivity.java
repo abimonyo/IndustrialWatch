@@ -5,6 +5,7 @@ import static com.app.industrialwatch.common.utils.AppConstants.GET_SECTION_DETA
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -46,6 +47,7 @@ public class SectionDetailsActivity extends BaseRecyclerViewActivity implements 
     Bundle bundle;
     SectionAdapter adapter;
     int sectionId;
+    Dialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,8 +68,11 @@ public class SectionDetailsActivity extends BaseRecyclerViewActivity implements 
         super.onResume();
         adapter = null;
         setAdapter(null);
-        if (bundle != null)
+        dialog=getProgressDialog(false);
+        if (bundle != null) {
+            showProgressDialog(dialog);
             doGetRequest(GET_SECTION_DETAIL, getServerParams(), this);
+        }
     }
 
     private Map<String, String> getServerParams() {
@@ -99,18 +104,21 @@ public class SectionDetailsActivity extends BaseRecyclerViewActivity implements 
             }
         } else
             showErrorMessage(response);
+        cancelDialog(dialog);
     }
 
     @Override
     public void onFailure(Call<ResponseBody> call, Throwable t) {
         Log.d("error==>>", t.getMessage());
+        showToast("Failed: Try again.");
+        cancelDialog(dialog);
 
     }
 
     @Override
     public void onClick(View v) {
         if (v == binding.button) {
-            bundle.getString(AppConstants.FROM,"SectionDetails");
+            bundle.putString(AppConstants.FROM,"SectionDetails");
             startActivity(bundle,AddUpdateSectionActivity.class);
         }
     }

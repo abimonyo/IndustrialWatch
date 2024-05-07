@@ -18,6 +18,8 @@
         android:layout_marginTop="16dp"
         app:cardBackgroundColor="@color/rv_item_color"
         app:cardCornerRadius="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
         app:cardElevation="0dp">
 
         <RelativeLayout
@@ -52,13 +54,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginEnd="20dp"
+                    android:visibility="invisible"
                     android:src="@drawable/baseline_edit_24" />
 
                 <ImageView
                     android:id="@+id/sectionDelete"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_delete" />
+                    android:src="@drawable/baseline_keyboard_arrow_down_24" />
 
             </LinearLayout>
         </RelativeLayout>

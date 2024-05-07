@@ -12,6 +12,11 @@
     <string name="link_product">Link Product</string>
     <string name="employee_productivity">Employee\nProductivity</string>
 
+    <!--- Employee dashboard -->
+    <string name="employee_record">Employees Record</string>
+    <string name="add_employee">Add Employee</string>
+    <string name="employee_ranking">Employee Ranking</string>
+
     <!--- production dashboard -->
     <string name="material">Materials</string>
     <string name="add_material">Add Material</string>
@@ -29,10 +34,14 @@
     <string name="confirm_section">Confirm Section</string>
     <string name="confirm">Confirm</string>
     <string name="edit_section">Edit Section</string>
+    <string name="edit_supervisor">Edit Supervisor</string>
+    <string name="update_supervisor">Update Supervisor</string>
     <string name="enter_section_name">Enter Section Name</string>
     <string name="enter_name">Enter Name</string>
     <string name="enter_username">Enter Username</string>
+    <string name="username">Username</string>
     <string name="enter_password">Enter Password</string>
+    <string name="password">Password</string>
     <string name="rules">Rules</string>
     <string name="rules_included">Rules Included</string>
     <string name="enter_fine">Enter Fine</string>
@@ -70,6 +79,16 @@
     <string name="defected_pieces">Defected Pieces</string>
     <string name="total_yield">Total Yield</string>
     <string name="download_images">Download Images</string>
+    <string name="role">Role</string>
+    <string name="gender">Gender</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="job_type">Job Type</string>
+    <string name="full_time">Full Time</string>
+    <string name="part_time">Part Time</string>
+    <string name="salary">Salary</string>
+    <string name="fine">Fine</string>
+
     <!-- arrays -->
     <string-array name="angles_list">
         <item>1 Top</item>

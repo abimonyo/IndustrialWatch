@@ -6,9 +6,9 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/bg_dashboard"
         android:orientation="vertical"
         android:weightSum="1"
-        android:background="@drawable/bg_dashboard"
         tools:context=".app.module.ui.admin.production.ProductionDashboardActivity">
 
         <LinearLayout
@@ -16,16 +16,20 @@
             android:layout_height="0dp"
             android:layout_weight="0.15">
 
-            <include layout="@layout/layout_dashboard_header" />
+            <include
+                android:id="@+id/layout_header"
+                layout="@layout/layout_dashboard_header" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:background="@drawable/bg_top_curve"
-            android:layout_weight="0.85">
+            android:layout_weight="0.85"
+            android:background="@drawable/bg_top_curve">
 
-            <include layout="@layout/layout_gridview"
-                android:id="@+id/grid_layout"/>
+            <include
+                android:id="@+id/grid_layout"
+                layout="@layout/layout_gridview" />
         </LinearLayout>
     </LinearLayout>
 </layout>

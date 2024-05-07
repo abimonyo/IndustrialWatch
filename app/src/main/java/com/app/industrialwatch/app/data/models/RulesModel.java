@@ -27,7 +27,7 @@ public class RulesModel implements BaseItem {
     @Expose
     private boolean isChecked;
 
-    public String getAllowedTime() {
+        public String getAllowedTime() {
         return allowedTime;
     }
 

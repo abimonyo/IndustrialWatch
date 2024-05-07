@@ -2,6 +2,7 @@ package com.app.industrialwatch.app.module.ui.authentication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Debug;
@@ -36,6 +37,7 @@ import retrofit2.Response;
 public class LoginActivity extends BaseActivity implements View.OnClickListener, Callback<ResponseBody> {
 
     ActivityLoginBinding binding;
+    Dialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +59,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
             binding.edtPassword.requestFocus();
             return;
         }
+        dialog = getProgressDialog(false);
+        showProgressDialog(dialog);
         doGetRequest(AppConstants.LOGIN_URL, getServerParams(), this);
 
     }
@@ -70,25 +74,30 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
     @Override
     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-        JSONObject jsonObject = null;
-        try {
-            jsonObject = new JSONObject(Objects.requireNonNull(response.body()).string());
-            if (jsonObject.has("data") && !jsonObject.isNull("data") && jsonObject.get("data") instanceof JSONObject) {
-                JSONObject data = jsonObject.getJSONObject("data");
-                int id = data.getInt("id");
-                String name = data.getString("name");
-                showToast(name);
-                startActivity(new Intent(getApplicationContext(), AdminDashboardActivity.class));
+        if (response.isSuccessful()) {
+            try {
+                JSONObject jsonObject = new JSONObject(Objects.requireNonNull(response.body()).string());
+                if (jsonObject.has("data") && !jsonObject.isNull("data") && jsonObject.get("data") instanceof JSONObject) {
+                    JSONObject data = jsonObject.getJSONObject("data");
+                    int id = data.getInt("id");
+                    String name = data.getString("name");
+                    showToast(name);
+                    startActivity(new Intent(getApplicationContext(), AdminDashboardActivity.class));
+                }
+            } catch (JSONException | IOException e) {
+                Log.d("error==>>", e.getMessage());
             }
-        } catch (JSONException | IOException e) {
-            Log.d("error==>>", e.getMessage());
-        }
+        } else
+            showErrorMessage(response);
+        cancelDialog(dialog);
 
     }
 
     @Override
     public void onFailure(Call<ResponseBody> call, Throwable t) {
         Log.d("error==>>", t.getMessage());
+        cancelDialog(dialog);
+        showToast("Failed: Try again");
 
     }
 }
