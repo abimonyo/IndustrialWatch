@@ -13,6 +13,7 @@ import com.app.industrialwatch.app.module.ui.admin.production.InventoryActivity;
 import com.app.industrialwatch.app.module.ui.admin.production.ProductActivity;
 import com.app.industrialwatch.app.module.ui.admin.production.RawMaterialActivity;
 import com.app.industrialwatch.common.base.BaseActivity;
+import com.app.industrialwatch.common.utils.AppConstants;
 import com.app.industrialwatch.databinding.ActivityEmployeeProductivityDashboardBinding;
 
 import java.util.ArrayList;
@@ -51,11 +52,13 @@ public class EmployeeProductivityDashboardActivity extends BaseActivity implemen
     @Override
     public void onClick(View v) {
         if ((int) v.getTag() == 0) {
-            startActivity(new Intent(getApplicationContext(), RawMaterialActivity.class));
+            startActivity(new Intent(getApplicationContext(), EmployeeRecordActivity.class));
         } else if ((int) v.getTag() == 1) {
             startActivity(new Intent(getApplicationContext(), AddEmployeeActivity.class));
         } else if ((int) v.getTag() == 2) {
-            startActivity(new Intent(getApplicationContext(), InventoryActivity.class));
+            Bundle bundle = new Bundle();
+            bundle.putString(AppConstants.FROM, AppConstants.RANKING);
+            startActivity(bundle, EmployeeRecordActivity.class);
         }
     }
 }

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".app.module.ui.employee.EmployeeAttendanceActivity">
+
+        <include
+            android:id="@+id/included_toolbar"
+            layout="@layout/layout_toolbar" />
+
+        <include
+            android:id="@+id/included_rcv"
+            layout="@layout/layout_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp" />
+    </LinearLayout>
+</layout>

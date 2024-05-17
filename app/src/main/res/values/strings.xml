@@ -9,6 +9,7 @@
     <string name="supervisor">Supervisor</string>
     <string name="production">Production</string>
     <string name="product">Product</string>
+    <string name="productivity">Productivity</string>
     <string name="link_product">Link Product</string>
     <string name="employee_productivity">Employee\nProductivity</string>
 
@@ -16,6 +17,9 @@
     <string name="employee_record">Employees Record</string>
     <string name="add_employee">Add Employee</string>
     <string name="employee_ranking">Employee Ranking</string>
+    <string name="attendance">Attendance</string>
+    <string name="summary">Summary</string>
+    <string name="violations">Violations</string>
 
     <!--- production dashboard -->
     <string name="material">Materials</string>
@@ -50,6 +54,7 @@
 
     <!-- Production !-->
     <string name="search_batch">Search Batch</string>
+    <string name="search_employee">Search Employee</string>
     <string name="create_batch">Create Batch</string>
     <string name="create_account">Create Account</string>
     <string name="add_batch">Add Batch</string>
@@ -76,6 +81,7 @@
     <string name="status">Status</string>
     <string name="dated">Dated</string>
     <string name="total_pieces">Total Pieces</string>
+    <string name="total_fine">Total Fine</string>
     <string name="defected_pieces">Defected Pieces</string>
     <string name="total_yield">Total Yield</string>
     <string name="download_images">Download Images</string>

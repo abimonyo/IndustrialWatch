@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        >
+
+        <com.app.industrialwatch.app.module.ui.view.RoundedImageView
+            android:id="@+id/iv_employee_image"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:layout_marginStart="20dp"
+            android:src="@drawable/img_place_holder_ranking" />
+
+        <ImageView
+            android:id="@+id/iv_rank"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginLeft="-16dp"
+            android:layout_toRightOf="@+id/iv_employee_image"
+            android:src="@drawable/img_rank_1" />
+
+        <TextView
+            android:id="@+id/tv_employee_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/iv_rank"
+            android:fontFamily="@font/inter_semi_bold"
+            android:text="@string/new_material"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/tv_productivity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginEnd="20dp"
+            android:layout_toRightOf="@+id/tv_employee_name"
+            android:fontFamily="@font/inter_semi_bold"
+            android:gravity="end"
+            android:text="60%"
+            android:textColor="@color/black" />
+
+
+    </RelativeLayout>
+</layout>

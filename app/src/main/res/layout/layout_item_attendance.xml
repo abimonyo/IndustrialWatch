@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/inter_regular"
+            android:padding="18dp"
+            android:text="20 May 2024"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:id="@+id/tv_date"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.01"
+            android:background="@drawable/verticle_line_light" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.99"
+            android:fontFamily="@font/inter_regular"
+            android:padding="18dp"
+            android:text="P"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:id="@+id/tv_status"/>
+
+    </LinearLayout>
+</layout>

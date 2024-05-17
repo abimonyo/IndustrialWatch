@@ -16,6 +16,10 @@ public class AppUtils {
     public static boolean validateEmptyEditText(EditText et) {
         return (et.getText().toString().equals("")) ? false : true;
     }
+    public static boolean ifNotNullEmpty(String text) {
+        return text != null && !text.isEmpty();
+    }
+
     public static List<Map<String, Object>> jsonArrayToList(JSONArray jsonArray) {
         List<Map<String, Object>> resultList = new ArrayList<>();
         try {

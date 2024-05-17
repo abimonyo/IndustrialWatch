@@ -9,8 +9,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.app.industrialwatch.R;
+import com.app.industrialwatch.app.data.models.SectionModel;
 import com.app.industrialwatch.app.network.ApiService;
 import com.app.industrialwatch.app.network.RetrofitClient;
 import com.app.industrialwatch.common.utils.AppConstants;
@@ -191,6 +195,12 @@ public class BaseActivity extends AppCompatActivity {
         Map<String, String> params = new HashMap<>();
         params.put(key, value);
         return params;
+    }
+    public void setSpinnerAdapter(List<SectionModel> batchModels, Spinner spinner, AdapterView.OnItemSelectedListener listener) {
+        ArrayAdapter<SectionModel> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, batchModels);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(listener);
     }
 
 }

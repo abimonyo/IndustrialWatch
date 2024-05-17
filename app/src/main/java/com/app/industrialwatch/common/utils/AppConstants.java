@@ -6,6 +6,8 @@ public class AppConstants {
     public static String TO = "to";
     public static String BUNDLE_KEY = "key";
     public static String KEY_NUMBER = "number";
+    public static String RECORD="record";
+    public static String RANKING="ranking";
 
     /* %%%% Response Code %%%%% */
     public static int OK = 200;
@@ -14,7 +16,8 @@ public class AppConstants {
 
 
     /* %%%% Base Url %%%% */
-    public static String BASE_URL = "http://192.168.43.211:5000/api/";
+    public static String BASE_URL = "http://192.168.100.10:5000/api/";
+    public static String IMAGE_URL="EmployeeImage/";
 
     /* %%%% LOGIN API %%%% */
 
@@ -34,6 +37,9 @@ public class AppConstants {
     public static String INSERT_EMPLOYEE = "Employee/AddEmployee";
     public static String GET_SUPERVISOR_DETAIL = "Employee/GetSupervisorDetail";
     public static String UPDATE_SUPERVISOR="Employee/UpdateSupervisor";
+    public static String GET_ALL_EMPLOYEES="Employee/GetAllEmployees";
+    public static String GET_EMPLOYEE_DETAIL="Employee/GetEmployeeDetail";
+    public static String GET_EMPLOYEE_ATTENDANCE="Employee/GetEmployeeAttendance";
 
     /* %%%%% Production API %%%%% */
     public static String GET_ALL_RAW_MATERIAL = "Production/GetAllRawMaterials";

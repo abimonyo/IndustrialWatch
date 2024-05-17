@@ -3,6 +3,7 @@ package com.app.industrialwatch.common.base.recyclerview;
 import android.util.Log;
 
 import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,6 +15,12 @@ public class BaseRecyclerViewActivity extends BaseActivity {
     public void initRecyclerView(RecyclerView recyclerView){
         this.recyclerView=recyclerView;
         this.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        this.recyclerView.setHasFixedSize(true);
+    }
+
+    public void initRecyclerViewForGrid(RecyclerView recyclerView,int spanCount) {
+        this.recyclerView = recyclerView;
+        this.recyclerView.setLayoutManager(new GridLayoutManager(this,spanCount));
         this.recyclerView.setHasFixedSize(true);
     }
     public void setRecyclerViewDivider(){

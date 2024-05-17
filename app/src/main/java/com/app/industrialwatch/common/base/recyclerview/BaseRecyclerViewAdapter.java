@@ -51,7 +51,6 @@ abstract public class BaseRecyclerViewAdapter extends RecyclerView.Adapter<BaseR
     }
 
 
-
     protected String getClassName() {
         return getClass().getSimpleName();
     }
@@ -80,7 +79,7 @@ abstract public class BaseRecyclerViewAdapter extends RecyclerView.Adapter<BaseR
      * @param newItems add list of items into adapter
      */
     public void addAll(List<BaseItem> newItems) {
-        for (BaseItem item : newItems){
+        for (BaseItem item : newItems) {
             items.add(item);
             notifyItemInserted(items.size() - 1);
         }
@@ -109,8 +108,11 @@ abstract public class BaseRecyclerViewAdapter extends RecyclerView.Adapter<BaseR
         }
     }
 
+
+
     /**
      * Remove item from recycler view
+     *
      * @param item {@link BaseItem}
      */
     public void remove(BaseItem item) {
@@ -121,6 +123,7 @@ abstract public class BaseRecyclerViewAdapter extends RecyclerView.Adapter<BaseR
 
     /**
      * Remove item from recycler view
+     *
      * @param position {@link BaseItem position}
      */
     public void remove(int position) {
@@ -131,6 +134,7 @@ abstract public class BaseRecyclerViewAdapter extends RecyclerView.Adapter<BaseR
 
     /**
      * Get {@link BaseItem} at given index
+     *
      * @param position index
      * @return Adapter item
      */

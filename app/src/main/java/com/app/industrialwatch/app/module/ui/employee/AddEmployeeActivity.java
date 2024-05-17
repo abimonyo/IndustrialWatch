@@ -78,22 +78,17 @@ public class AddEmployeeActivity extends TakePhotoActivity implements View.OnCli
         jobRoleModelList = new ArrayList<>();
         sectionModelList.add(new SectionModel(-1, "Select Section"));
         jobRoleModelList.add(new SectionModel(-1, "Select Role"));
-        setSpinnerAdapter(sectionModelList, binding.spSection);
-        setSpinnerAdapter(jobRoleModelList, binding.spRole);
+        setSpinnerAdapter(sectionModelList, binding.spSection,this);
+        setSpinnerAdapter(jobRoleModelList, binding.spRole,this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        doGetRequest(AppConstants.SECTION_URL, getServerParams(), this);
+        doGetRequest(AppConstants.SECTION_URL, getParams("status","1"), this);
         doGetRequest(AppConstants.GET_ALL_ROLES, this);
     }
 
-    private Map<String, String> getServerParams() {
-        Map<String, String> params = new HashMap<>();
-        params.put("status", "1");
-        return params;
-    }
 
     @Override
     public void onClick(View v) {
@@ -248,12 +243,7 @@ public class AddEmployeeActivity extends TakePhotoActivity implements View.OnCli
         cancelDialog(dialog);
     }
 
-    private void setSpinnerAdapter(List<SectionModel> batchModels, Spinner spinner) {
-        ArrayAdapter<SectionModel> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, batchModels);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(this);
-    }
+
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
