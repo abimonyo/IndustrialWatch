@@ -9,6 +9,7 @@
     <declare-styleable name="CircularProgressBar">
         <attr name="strokeWidth" format="dimension" />
         <attr name="progress" format="float" />
+        <attr name="totalProgress" format="float"/>
         <attr name="progressColor" format="color" />
         <attr name="backgroundColor" format="color" />
     </declare-styleable>

@@ -4,6 +4,7 @@ import static com.app.industrialwatch.app.business.BaseItem.ITEM_EMPLOYEE_ATTEND
 import static com.app.industrialwatch.app.business.BaseItem.ITEM_EMPLOYEE_RANKING;
 import static com.app.industrialwatch.app.business.BaseItem.ITEM_EMPLOYEE_RECORD;
 import static com.app.industrialwatch.app.business.BaseItem.ITEM_RAW_METERIAL;
+import static com.app.industrialwatch.app.business.BaseItem.ITEM_VIOLATIONS;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -17,6 +18,7 @@ import androidx.annotation.NonNull;
 import com.app.industrialwatch.R;
 import com.app.industrialwatch.app.business.BaseItem;
 import com.app.industrialwatch.app.data.models.EmployeeModel;
+import com.app.industrialwatch.app.data.models.ViolationModel;
 import com.app.industrialwatch.common.base.recyclerview.BaseRecyclerViewAdapter;
 import com.app.industrialwatch.common.base.recyclerview.BaseRecyclerViewHolder;
 import com.app.industrialwatch.common.base.recyclerview.OnRecyclerViewItemClickListener;
@@ -26,6 +28,7 @@ import com.app.industrialwatch.databinding.LayoutItemAttendanceBinding;
 import com.app.industrialwatch.databinding.LayoutItemEmployeeRecordBinding;
 import com.app.industrialwatch.databinding.LayoutItemRankingBinding;
 import com.app.industrialwatch.databinding.LayoutItemRuleBinding;
+import com.app.industrialwatch.databinding.LayoutItemViolationBinding;
 import com.app.industrialwatch.databinding.LayoutRulesTableBinding;
 import com.app.industrialwatch.databinding.LayoutSectionItemBinding;
 
@@ -54,6 +57,9 @@ public class EmployeeAdapter extends BaseRecyclerViewAdapter {
         } else if (viewType == ITEM_EMPLOYEE_RANKING) {
             LayoutItemRankingBinding binding = LayoutItemRankingBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
             holder = new EmployeeRankingHolder(binding);
+        } else if (viewType == ITEM_VIOLATIONS) {
+            LayoutItemViolationBinding binding = LayoutItemViolationBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+            holder = new EmployeeViolationHolder(binding);
         }
         return holder;
     }
@@ -79,6 +85,9 @@ public class EmployeeAdapter extends BaseRecyclerViewAdapter {
         } else if (holder instanceof EmployeeRankingHolder) {
             EmployeeModel model = (EmployeeModel) getItemAt(position);
             ((EmployeeRankingHolder) holder).setData(model, position);
+        } else if (holder instanceof EmployeeViolationHolder) {
+            ViolationModel model = (ViolationModel) getItemAt(position);
+            ((EmployeeViolationHolder) holder).setData(model);
         }
 
     }
@@ -151,6 +160,33 @@ public class EmployeeAdapter extends BaseRecyclerViewAdapter {
             }
         }
     }
+
+    public class EmployeeViolationHolder extends BaseRecyclerViewHolder {
+        LayoutItemViolationBinding binding;
+
+        @Override
+        protected BaseRecyclerViewHolder populateView() {
+            return null;
+        }
+
+        public EmployeeViolationHolder(LayoutItemViolationBinding view) {
+            super(view.getRoot(), true);
+            binding = view;
+        }
+
+        public void setData(ViolationModel model) {
+            binding.tvViolationTitle.setText(model.getRuleName());
+            binding.tvViolationDate.setText(model.getDate());
+            binding.tvViolationTime.setText(model.getTime());
+            try {
+                PicassoUtils.picassoLoadImageOrPlaceHolder(context, binding.ivViolation,
+                        AppConstants.BASE_URL + AppConstants.VIOLATION_IMAGES + URLEncoder.encode(model.getImagesList().get(0), "UTF-8"),
+                        R.drawable.img_place_holder_ranking, 81, 81);
+            } catch (UnsupportedEncodingException e) {
+                Log.d("error==>>", e.getMessage());
+            }        }
+    }
+
 
     public int getItemViewType(int position) {
         return getItemAt(position).getItemType();

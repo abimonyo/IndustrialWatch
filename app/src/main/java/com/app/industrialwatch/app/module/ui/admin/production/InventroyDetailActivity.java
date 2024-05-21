@@ -51,6 +51,12 @@ public class InventroyDetailActivity extends BaseRecyclerViewActivity implements
         setContentView(binding.getRoot());
         if (getIntent().getExtras() != null) {
             bundle = getIntent().getExtras();
+            if (bundle != null) {
+                if (bundle.getString(AppConstants.FROM,"").equals("AddBatch")) {
+                    binding.btnConfirm.setVisibility(View.VISIBLE);
+                    binding.btnConfirm.setOnClickListener(this);
+                }
+            }
         }
         initView();
     }
@@ -59,12 +65,9 @@ public class InventroyDetailActivity extends BaseRecyclerViewActivity implements
         inventoryList = new ArrayList<>();
         selectedStockList = new ArrayList<>();
         initRecyclerView(binding.includedLayout.recyclerView);
-        setPrimaryActionBar(binding.includedToolbar.primaryToolbar, bundle.getString("name"), this);
+        setPrimaryActionBar(binding.includedToolbar.primaryToolbar, bundle.getString("name")==null?"Stocks":bundle.getString("name"), this);
         setRecyclerViewHeader("Stock #", "Qty", "Price/kg", "Date");
-        if (bundle.getString(AppConstants.FROM).equals("AddBatch")) {
-            binding.btnConfirm.setVisibility(View.VISIBLE);
-            binding.btnConfirm.setOnClickListener(this);
-        }
+
     }
 
     @Override

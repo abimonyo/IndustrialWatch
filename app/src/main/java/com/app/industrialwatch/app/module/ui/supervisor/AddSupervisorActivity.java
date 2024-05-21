@@ -15,6 +15,7 @@ import com.app.industrialwatch.app.business.BaseItem;
 import com.app.industrialwatch.app.data.models.RulesModel;
 import com.app.industrialwatch.app.data.models.SectionModel;
 import com.app.industrialwatch.app.data.models.SupervisorModel;
+import com.app.industrialwatch.app.data.preferences.SharedPreferenceManager;
 import com.app.industrialwatch.app.module.ui.adapter.ItemCheckBoxAdapter;
 import com.app.industrialwatch.app.module.ui.adapter.SectionAdapter;
 import com.app.industrialwatch.app.module.ui.admin.section.SectionActivity;
@@ -57,15 +58,23 @@ public class AddSupervisorActivity extends BaseActivity implements Callback<Resp
         super.onCreate(savedInstanceState);
         binding = ActivityAddSupervisorBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        binding.btnAddBatch.setText(getString(R.string.update_supervisor));
+        setPrimaryActionBar(binding.toolbar.primaryToolbar, getString(R.string.edit_supervisor));
+
         if (getIntent().getExtras() != null) {
             bundle = getIntent().getExtras();
+            if (bundle.getString(AppConstants.FROM, "").equals("edit")) {
+                binding.layoutSpinnerWrapper.setVisibility(View.GONE);
+                binding.layoutNameWrapper.setVisibility(View.VISIBLE);
+                binding.btnAddBatch.setText(getString(R.string.update_profile));
+                setToolbarTitle(getString(R.string.update_profile));
+            }
         }
         sectionList = new ArrayList<>();
         sectionList.add(new SectionModel(-1, "Select Section"));
         selectedSectionList = new ArrayList<>();
-        setPrimaryActionBar(binding.toolbar.primaryToolbar, getString(R.string.edit_supervisor));
-        binding.btnAddBatch.setText(getString(R.string.update_supervisor));
         binding.btnAddBatch.setOnClickListener(this);
+
         //binding.sectionSpinner.setAdapter(new ArrayAdapter<String>());
     }
 
@@ -75,8 +84,14 @@ public class AddSupervisorActivity extends BaseActivity implements Callback<Resp
         dialog = getProgressDialog(false);
         showProgressDialog(dialog);
         doGetRequest(AppConstants.SECTION_URL, getParams("status", 1 + ""), this);
-        if (bundle != null)
+        if (bundle != null && !bundle.getString(AppConstants.FROM, "").equals("edit"))
             doGetRequest(AppConstants.GET_SUPERVISOR_DETAIL, getParams("supervisor_id", bundle.getInt(AppConstants.BUNDLE_KEY) + ""), this);
+        else {
+            if (SharedPreferenceManager.getInstance().read("id", 0) != 0) {
+                doGetRequest(AppConstants.GET_EMPLOYEE_PROFILE, getParams("employee_id", SharedPreferenceManager.getInstance().read("id", 0)+""), this);
+
+            }
+        }
     }
 
 
@@ -103,6 +118,15 @@ public class AddSupervisorActivity extends BaseActivity implements Callback<Resp
                     JSONObject object = new JSONObject(response.body().string());
                     showToast(object.getString("message"));
                     finish();
+                } else if (call.request().url().url().toString().contains(AppConstants.GET_EMPLOYEE_PROFILE)) {
+                    JSONObject object = new JSONObject(response.body().string());
+                    binding.etSupervisorUsername.setText(object.getString("username"));
+                    binding.etSupervisorName.setText(object.getString("name"));
+                    binding.etSupervisorPassword.setText(object.getString("password"));
+                }
+                else if (call.request().url().url().toString().contains(AppConstants.UPDATE_EMPLOYEE_PROFILE)){
+                    JSONObject object=new JSONObject(response.body().string());
+                    showToast(object.getString("message"));
                 }
 
             } catch (JSONException | IOException e) {
@@ -123,10 +147,14 @@ public class AddSupervisorActivity extends BaseActivity implements Callback<Resp
     @Override
     public void onClick(View v) {
         if (v.getId() == binding.btnAddBatch.getId()) {
-            if (selectedSectionList.size() > 0)
-                makeApiCall();
-            else
-                showToast("Please select section.");
+            if (bundle.getString(AppConstants.FROM, "").equals("edit")) {
+                    updateEmployeeProfile();
+            } else {
+                if (selectedSectionList.size() > 0)
+                    makeApiCall();
+                else
+                    showToast("Please select section.");
+            }
         } else {
             String result = (String) v.getTag();
             if (Boolean.parseBoolean(result.split(",")[0])) {
@@ -135,6 +163,22 @@ public class AddSupervisorActivity extends BaseActivity implements Callback<Resp
             } else {
                 selectedSectionList.remove((Object) Integer.parseInt(result.split(",")[2]));
             }
+        }
+    }
+
+    private void updateEmployeeProfile() {
+        try {
+            JSONObject object = new JSONObject();
+            //SharedPreferenceManager.getInstance().read("id",0)
+            object.put("id", 9);
+            object.put("username", getValueFromField(binding.etSupervisorUsername));
+            object.put("name", getValueFromField(binding.etSupervisorName));
+            object.put("password", getValueFromField(binding.etSupervisorPassword));
+            RequestBody body = RequestBody.create(object.toString(), MediaType.get("application/json; charset=utf-8"));
+            showProgressDialog(dialog);
+            doPutRequest(AppConstants.UPDATE_EMPLOYEE_PROFILE, body, this);
+        } catch (JSONException e) {
+            Log.d("error==>>", e.getMessage());
         }
     }
 

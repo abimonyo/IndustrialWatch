@@ -42,6 +42,7 @@
                     android:layout_marginTop="2dp"
                     android:fontFamily="@font/inter_bold"
                     android:gravity="start"
+                    android:id="@+id/tv_name"
                     android:text="@string/name"
                     android:textColor="@color/white_smoke"
                     android:textSize="24sp" />

@@ -42,8 +42,8 @@ public class EmployeeProductivityDashboardActivity extends BaseActivity implemen
 
     private ArrayList<GridItemModel> fillGridItems() {
         ArrayList<GridItemModel> gridItemModels = new ArrayList<>();
-        gridItemModels.add(new GridItemModel(getString(R.string.employee_record), R.drawable.ic_employee_record));
         gridItemModels.add(new GridItemModel(getString(R.string.add_employee), R.drawable.ic_add_employee));
+        gridItemModels.add(new GridItemModel(getString(R.string.employee_record), R.drawable.ic_employee_record));
         gridItemModels.add(new GridItemModel(getString(R.string.employee_ranking), R.drawable.ic_employee_ranking));
         return gridItemModels;
 
@@ -51,9 +51,9 @@ public class EmployeeProductivityDashboardActivity extends BaseActivity implemen
 
     @Override
     public void onClick(View v) {
-        if ((int) v.getTag() == 0) {
+        if ((int) v.getTag() == 1) {
             startActivity(new Intent(getApplicationContext(), EmployeeRecordActivity.class));
-        } else if ((int) v.getTag() == 1) {
+        } else if ((int) v.getTag() == 0) {
             startActivity(new Intent(getApplicationContext(), AddEmployeeActivity.class));
         } else if ((int) v.getTag() == 2) {
             Bundle bundle = new Bundle();

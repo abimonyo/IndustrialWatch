@@ -10,6 +10,7 @@ import android.util.Log;
 import com.app.industrialwatch.R;
 import com.app.industrialwatch.app.business.BaseItem;
 import com.app.industrialwatch.app.data.models.EmployeeModel;
+import com.app.industrialwatch.app.data.preferences.SharedPreferenceManager;
 import com.app.industrialwatch.app.module.ui.adapter.EmployeeAdapter;
 import com.app.industrialwatch.common.base.recyclerview.BaseRecyclerViewActivity;
 import com.app.industrialwatch.common.utils.AppConstants;
@@ -51,7 +52,7 @@ public class EmployeeAttendanceActivity extends BaseRecyclerViewActivity impleme
     }
 
     private void initView() {
-        setPrimaryActionBar(binding.includedToolbar.primaryToolbar, model.getName());
+        setPrimaryActionBar(binding.includedToolbar.primaryToolbar, model!=null?model.getName():SharedPreferenceManager.getInstance().read("name",""));
         setRecyclerViewHeader("Date", "", "", "Status");
         initRecyclerView(binding.includedRcv.recyclerView);
         setRecyclerViewDivider();
@@ -68,7 +69,9 @@ public class EmployeeAttendanceActivity extends BaseRecyclerViewActivity impleme
             showProgressDialog(dialog);
             setAdapter(null);
             doGetRequest(AppConstants.GET_EMPLOYEE_ATTENDANCE, getParams("employee_id", model.getId() + ""), this);
-        }
+        }else
+            doGetRequest(AppConstants.GET_EMPLOYEE_ATTENDANCE, getParams("employee_id", SharedPreferenceManager.getInstance().read("id",0) + ""), this);
+
     }
 
     @Override

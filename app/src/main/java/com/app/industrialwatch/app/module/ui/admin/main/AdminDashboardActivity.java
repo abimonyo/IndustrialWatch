@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.app.industrialwatch.R;
 import com.app.industrialwatch.app.data.models.GridItemModel;
+import com.app.industrialwatch.app.data.preferences.SharedPreferenceManager;
 import com.app.industrialwatch.app.module.ui.adapter.GridItemAdapter;
 import com.app.industrialwatch.app.module.ui.adapter.ProductionAdapter;
 import com.app.industrialwatch.app.module.ui.admin.production.ProductionActivity;
@@ -39,6 +40,8 @@ public class AdminDashboardActivity extends AppCompatActivity implements View.On
 
     private void initGridView() {
         binding.gridLayout.girdView.setAdapter(new GridItemAdapter(this, fillGridItems(), this));
+        binding.tvName.setText(SharedPreferenceManager.getInstance().read("name",""));
+
     }
 
     private ArrayList<GridItemModel> fillGridItems() {

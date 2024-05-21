@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import okhttp3.MediaType;
@@ -61,6 +62,7 @@ public class ProductActivity extends BaseRecyclerViewActivity implements View.On
     List<BaseItem> rawBaseList;
     String selectedMaterialName;
     Dialog dialog;
+    List<BaseItem> anglesList ;
 
     @Override
 
@@ -89,25 +91,36 @@ public class ProductActivity extends BaseRecyclerViewActivity implements View.On
     private void setAnglesSpinner() {
         rawMap = new HashMap<>();
         checkedAnglesList = new ArrayList<>();
-        List<BaseItem> anglesList = new ArrayList<>();
+         anglesList = new ArrayList<>();
         anglesList.add(new SectionModel(1, "1 Top"));
-        anglesList.add(new SectionModel(1, "2 Flip"));
-        anglesList.add(new SectionModel(1, "3 Right"));
-        anglesList.add(new SectionModel(1, "4 Left"));
-        anglesList.add(new SectionModel(1, "5 Front"));
-        anglesList.add(new SectionModel(1, "6 Back"));
+        anglesList.add(new SectionModel(2, "2 Flip"));
+        anglesList.add(new SectionModel(3, "3 Right"));
+        anglesList.add(new SectionModel(4, "4 Left"));
+        anglesList.add(new SectionModel(5, "5 Front"));
+        anglesList.add(new SectionModel(6, "6 Back"));
         ItemCheckBoxAdapter adapter = new ItemCheckBoxAdapter(this, anglesList, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String result = (String) v.getTag();
                 if (Boolean.parseBoolean(result.split(",")[0])) {
-                    checkedAnglesList.add(result.split(",")[1]);
+                    checkAndInsertAngle(result.split(",")[1]);
                 } else {
                     checkedAnglesList.remove(result.split(",")[1]);
                 }
             }
         });
         binding.spAngles.setAdapter(adapter);
+    }
+    private void checkAndInsertAngle(String name) {
+        if (checkedAnglesList.size()>0) {
+            for (int i = 0; i < checkedAnglesList.size(); i++) {
+                if (checkedAnglesList.get(i).equals(name))
+                    return;
+
+            }
+
+        }
+        checkedAnglesList.add(name);
     }
 
     @Override

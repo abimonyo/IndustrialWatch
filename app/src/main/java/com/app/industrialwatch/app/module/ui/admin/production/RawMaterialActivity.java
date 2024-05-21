@@ -1,5 +1,7 @@
 package com.app.industrialwatch.app.module.ui.admin.production;
 
+import static com.app.industrialwatch.common.utils.AppConstants.GET_ALL_RAW_MATERIAL;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -63,7 +65,7 @@ public class RawMaterialActivity extends BaseRecyclerViewActivity implements Cal
         super.onResume();
         adapter = null;
         setAdapter(null);
-        doGetRequest(AppConstants.GET_ALL_RAW_MATERIAL, this);
+        doGetRequest(GET_ALL_RAW_MATERIAL, this);
     }
 
     @SuppressLint("MissingInflatedId")
@@ -99,7 +101,7 @@ public class RawMaterialActivity extends BaseRecyclerViewActivity implements Cal
                     try {
                         JSONObject jsonObject = new JSONObject(response.body().string());
                         showToast(jsonObject.getString("message"));
-                        doGetRequest(AppConstants.GET_ALL_RAW_MATERIAL, this);
+                        doGetRequest(GET_ALL_RAW_MATERIAL, this);
 
 
                     } catch (IOException | JSONException e) {
@@ -125,16 +127,17 @@ public class RawMaterialActivity extends BaseRecyclerViewActivity implements Cal
     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
         if (response.isSuccessful()) {
             try {
-                Log.d("response==>>",response.body().string());
-                JSONArray array = new JSONArray(response.body().string());
-                List<BaseItem> rawMaterialList = new Gson().fromJson(array.toString(), new TypeToken<List<RawMaterialModel>>() {
-                }.getType());
-                if (adapter == null) {
-                    adapter = new ProductionAdapter(rawMaterialList, null);
-                    setAdapter(adapter);
-                } else if (rawMaterialList.size() > 0) {
-                    adapter.clearItems();
-                    adapter.addAll(rawMaterialList);
+                if (call.request().url().url().toString().contains(GET_ALL_RAW_MATERIAL)) {
+                    JSONArray array = new JSONArray(response.body().string());
+                    List<BaseItem> rawMaterialList = new Gson().fromJson(array.toString(), new TypeToken<List<RawMaterialModel>>() {
+                    }.getType());
+                    if (adapter == null) {
+                        adapter = new ProductionAdapter(rawMaterialList, null);
+                        setAdapter(adapter);
+                    } else {
+                        adapter.clearItems();
+                        adapter.addAll(rawMaterialList);
+                    }
                 }
 
             } catch (IOException | JSONException e) {

@@ -47,6 +47,7 @@ public class BaseActivity extends AppCompatActivity {
     private Toolbar toolbar;
 
     public void setPrimaryActionBar(Toolbar toolbar, String title) {
+        this.toolbar=toolbar;
         TextView tvTitle = toolbar.findViewById(R.id.toolbar_title);
         if (tvTitle != null && title != null)
             tvTitle.setText(title);
@@ -56,6 +57,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public void setPrimaryActionBar(Toolbar toolbar, String title, View.OnClickListener callBack) {
+       this.toolbar=toolbar;
         TextView tvTitle = toolbar.findViewById(R.id.toolbar_title);
         if (tvTitle != null && title != null)
             tvTitle.setText(title);
@@ -70,6 +72,9 @@ public class BaseActivity extends AppCompatActivity {
             finish();
         });
 
+    }
+    public Toolbar getToolbar(){
+        return toolbar!=null?toolbar:null;
     }
 
     public void setDashboardActionBar() {
@@ -107,6 +112,11 @@ public class BaseActivity extends AppCompatActivity {
         if (toolbar != null) {
             toolbar.findViewById(R.id.toolbar_title).setVisibility(View.GONE);
         }
+    }
+    public void setToolbarTitle(String title){
+        TextView tvTitle = toolbar.findViewById(R.id.toolbar_title);
+        if (tvTitle != null && title != null)
+            tvTitle.setText(title);
     }
 
     public void showToast(String message) {

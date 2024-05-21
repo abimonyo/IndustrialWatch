@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/employeeHomeFragment">
+
+    <fragment
+        android:id="@+id/employeeHomeFragment"
+        android:name="com.app.industrialwatch.app.module.ui.employee.EmployeeHomeFragment"
+        android:label="fragment_employee_home"
+        tools:layout="@layout/fragment_employee_home" />
+    <fragment
+        android:id="@+id/employeeAttendanceFragment"
+        android:name="com.app.industrialwatch.app.module.ui.employee.EmployeeAttendanceFragment"
+        android:label="fragment_employee_attendance"
+        tools:layout="@layout/fragment_employee_attendance" />
+    <fragment
+        android:id="@+id/employeeSummaryFragment"
+        android:name="com.app.industrialwatch.app.module.ui.employee.EmployeeSummaryFragment"
+        android:label="fragment_employee_summary"
+        tools:layout="@layout/fragment_employee_summary" />
+    <fragment
+        android:id="@+id/employeeViolationFragment"
+        android:name="com.app.industrialwatch.app.module.ui.employee.EmployeeViolationFragment"
+        android:label="fragment_employee_violation"
+        tools:layout="@layout/fragment_employee_violation" />
+    <fragment
+        android:id="@+id/employeeProfileFragment"
+        android:name="com.app.industrialwatch.app.module.ui.employee.EmployeeProfileFragment"
+        android:label="fragment_employee_profile"
+        tools:layout="@layout/fragment_employee_profile" />
+
+</navigation>

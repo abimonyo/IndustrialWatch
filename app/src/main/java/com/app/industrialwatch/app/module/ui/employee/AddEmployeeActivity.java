@@ -78,14 +78,19 @@ public class AddEmployeeActivity extends TakePhotoActivity implements View.OnCli
         jobRoleModelList = new ArrayList<>();
         sectionModelList.add(new SectionModel(-1, "Select Section"));
         jobRoleModelList.add(new SectionModel(-1, "Select Role"));
-        setSpinnerAdapter(sectionModelList, binding.spSection,this);
-        setSpinnerAdapter(jobRoleModelList, binding.spRole,this);
+        setSpinnerAdapter(sectionModelList, binding.spSection, this);
+        setSpinnerAdapter(jobRoleModelList, binding.spRole, this);
+        setPrimaryActionBar(binding.includedToolbar.primaryToolbar, getString(R.string.add_employee));
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        doGetRequest(AppConstants.SECTION_URL, getParams("status","1"), this);
+        if (sectionModelList.size() > 1 || jobRoleModelList.size() > 1) {
+            sectionModelList.clear();
+            jobRoleModelList.clear();
+        }
+        doGetRequest(AppConstants.SECTION_URL, getParams("status", "1"), this);
         doGetRequest(AppConstants.GET_ALL_ROLES, this);
     }
 
@@ -212,13 +217,13 @@ public class AddEmployeeActivity extends TakePhotoActivity implements View.OnCli
             try {
                 if (call.request().url().url().toString().contains(AppConstants.SECTION_URL)) {
                     JSONArray array = new JSONArray(response.body().string());
-                    Log.d("section",array.length()+"");
+                    Log.d("section", array.length() + "");
                     sectionModelList.addAll(new Gson().fromJson(array.toString(), new TypeToken<List<SectionModel>>() {
                     }.getType()));
 
                 } else if (call.request().url().url().toString().contains(AppConstants.GET_ALL_ROLES)) {
                     JSONArray array = new JSONArray(response.body().string());
-                    Log.d("role",array.length()+"");
+                    Log.d("role", array.length() + "");
 
                     jobRoleModelList.addAll(new Gson().fromJson(array.toString(), new TypeToken<List<SectionModel>>() {
                     }.getType()));
@@ -242,7 +247,6 @@ public class AddEmployeeActivity extends TakePhotoActivity implements View.OnCli
         showToast("Failed, Try again.");
         cancelDialog(dialog);
     }
-
 
 
     @Override

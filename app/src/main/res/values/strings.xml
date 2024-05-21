@@ -2,6 +2,7 @@
     <string name="app_name">Industrial Watch</string>
     <string name="welcome">Welcome</string>
     <string name="name">Name</string>
+    <string name="logout">Logout</string>
 
     <!-- admin dashboard -->
     <string name="admin_dashboard">Admin Dashboard</string>
@@ -10,16 +11,24 @@
     <string name="production">Production</string>
     <string name="product">Product</string>
     <string name="productivity">Productivity</string>
+    <string name="presents">Presents</string>
     <string name="link_product">Link Product</string>
-    <string name="employee_productivity">Employee\nProductivity</string>
+    <string name="employee_productivity">Employee Productivity</string>
 
     <!--- Employee dashboard -->
     <string name="employee_record">Employees Record</string>
     <string name="add_employee">Add Employee</string>
     <string name="employee_ranking">Employee Ranking</string>
     <string name="attendance">Attendance</string>
+    <string name="total_attendance">Total Attendance</string>
     <string name="summary">Summary</string>
     <string name="violations">Violations</string>
+    <string name="select_date">Select Date</string>
+    <string name="employee_monitoring">Employee Monitoring</string>
+    <string name="defect_monitoring">Defect Monitoring</string>
+    <string name="my_attendance">My Attendance</string>
+    <string name="supervisor_dashboard">Supervisor Dashboard</string>
+
 
     <!--- production dashboard -->
     <string name="material">Materials</string>
@@ -39,6 +48,7 @@
     <string name="confirm">Confirm</string>
     <string name="edit_section">Edit Section</string>
     <string name="edit_supervisor">Edit Supervisor</string>
+    <string name="update_profile">Update Profile</string>
     <string name="update_supervisor">Update Supervisor</string>
     <string name="enter_section_name">Enter Section Name</string>
     <string name="enter_name">Enter Name</string>
@@ -109,4 +119,8 @@
         <item>MG</item>
         <item>kG</item>
     </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="profile">Profile</string>
+    <string name="products">Products</string>
 </resources>

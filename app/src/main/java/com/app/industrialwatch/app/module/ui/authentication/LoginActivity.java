@@ -11,7 +11,10 @@ import android.view.View;
 
 import com.app.industrialwatch.R;
 import com.app.industrialwatch.app.business.MyJSONObject;
+import com.app.industrialwatch.app.data.preferences.SharedPreferenceManager;
 import com.app.industrialwatch.app.module.ui.admin.main.AdminDashboardActivity;
+import com.app.industrialwatch.app.module.ui.employee.EmployeeDashboardActivity;
+import com.app.industrialwatch.app.module.ui.supervisor.SupervisorDashboardActivity;
 import com.app.industrialwatch.app.network.ApiService;
 import com.app.industrialwatch.app.network.RetrofitClient;
 import com.app.industrialwatch.common.base.BaseActivity;
@@ -51,7 +54,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     public void onClick(View v) {
         if (!AppUtils.validateEmptyEditText(binding.edtUserName)) {
             binding.edtUserName.setError("Please enter username");
-            binding.edtPassword.requestFocus();
+            binding.edtUserName.requestFocus();
             return;
         }
         if (!AppUtils.validateEmptyEditText(binding.edtPassword)) {
@@ -76,14 +79,29 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
         if (response.isSuccessful()) {
             try {
-                JSONObject jsonObject = new JSONObject(Objects.requireNonNull(response.body()).string());
-                if (jsonObject.has("data") && !jsonObject.isNull("data") && jsonObject.get("data") instanceof JSONObject) {
-                    JSONObject data = jsonObject.getJSONObject("data");
-                    int id = data.getInt("id");
-                    String name = data.getString("name");
-                    showToast(name);
-                    startActivity(new Intent(getApplicationContext(), AdminDashboardActivity.class));
+                JSONObject data = new JSONObject(Objects.requireNonNull(response.body()).string());
+                int id = data.getInt("id");
+                String name = data.getString("name");
+                String role = data.getString("user_role");
+                SharedPreferenceManager.setSingletonInstance(LoginActivity.this);
+                SharedPreferenceManager.getInstance().save("id", id);
+                SharedPreferenceManager.getInstance().save("name", name);
+                SharedPreferenceManager.getInstance().save("user_role", role);
+                SharedPreferenceManager.getInstance().save(AppConstants.LOGIN_KEY,true);
+                showToast("Login Successfully.");
+                switch (role) {
+                    case "Supervisor":
+                        startActivity(new Intent(getApplicationContext(), SupervisorDashboardActivity.class));
+                        break;
+                    case "Employee":
+                        startActivity(new Intent(getApplicationContext(), EmployeeDashboardActivity.class));
+                        break;
+                    default:
+                        startActivity(new Intent(getApplicationContext(), AdminDashboardActivity.class));
+                        break;
+
                 }
+
             } catch (JSONException | IOException e) {
                 Log.d("error==>>", e.getMessage());
             }

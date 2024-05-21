@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/employeeHomeFragment"
+        android:icon="@drawable/baseline_home_24"
+        android:title="Home"/>
+    <item
+        android:id="@+id/employeeAttendanceFragment"
+        android:icon="@drawable/clinical_notes"
+        android:title="Attendance" />
+    <item
+        android:id="@+id/placholder"
+        android:title=""/>
+    <item
+        android:id="@+id/employeeViolationFragment"
+        android:icon="@drawable/baseline_block_24"
+        android:title="Violations" />
+    <item
+        android:id="@+id/employeeProfileFragment"
+        android:icon="@drawable/ic_profile"
+        android:title="Profile" />
+</menu>

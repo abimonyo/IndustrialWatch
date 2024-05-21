@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_violation"
+            android:layout_width="81dp"
+            android:layout_height="81dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:scaleType="fitCenter" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="20dp"
+            android:layout_toRightOf="@id/iv_violation">
+
+            <TextView
+                android:id="@+id/tv_violation_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_bold"
+                android:text="@string/violations"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/tv_violation_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_violation_title"
+                android:fontFamily="@font/inter_regular"
+                android:text="10:00 AM"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_violation_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_violation_time"
+                android:fontFamily="@font/inter_regular"
+                android:text="4 April 2024"
+                android:textSize="16sp" />
+
+        </RelativeLayout>
+    </RelativeLayout>
+</layout>

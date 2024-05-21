@@ -21,6 +21,19 @@
         android:theme="@style/Theme.IndustrialWatch"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+
+        <activity
+            android:name=".app.module.ui.employee.EmployeeDashboardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".app.module.ui.supervisor.SupervisorDashboardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".app.module.ui.employee.EmployeeSummaryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".app.module.ui.employee.EmployeeViolationActivity"
+            android:exported="false" />
         <activity
             android:name=".app.module.ui.employee.EmployeeAttendanceActivity"
             android:exported="false" />
@@ -30,7 +43,6 @@
         <activity
             android:name=".app.module.ui.employee.EmployeeRecordActivity"
             android:exported="false" />
-
         <activity
             android:name=".app.module.ui.admin.section.ArchivedSectionActivity"
             android:exported="false" />

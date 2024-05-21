@@ -89,11 +89,11 @@ public class EmployeeDetailActivity extends BaseActivity implements Callback<Res
     @Override
     public void onClick(View v) {
         if (v.getId() == binding.btnAttendance.getId()) {
-            startActivity(bundle,EmployeeAttendanceActivity.class);
+            startActivity(bundle, EmployeeAttendanceActivity.class);
         } else if (v.getId() == binding.btnViolations.getId()) {
-            //TODO: violations
+            startActivity(bundle, EmployeeViolationActivity.class);
         } else if (v.getId() == binding.btnSummary.getId()) {
-            //TODO: summary
+            startActivity(bundle, EmployeeSummaryActivity.class);
         }
     }
 }

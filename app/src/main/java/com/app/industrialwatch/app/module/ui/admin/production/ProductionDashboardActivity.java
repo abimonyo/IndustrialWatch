@@ -28,6 +28,8 @@ public class ProductionDashboardActivity extends AppCompatActivity implements Vi
 
     private void initGridView() {
         binding.gridLayout.girdView.setAdapter(new GridItemAdapter(this, fillGridItems(), this));
+        binding.layoutHeader.ivLogout.setVisibility(View.GONE);
+        binding.layoutHeader.dashboardTitle.setText(getString(R.string.production));
     }
 
     private ArrayList<GridItemModel> fillGridItems() {
@@ -35,7 +37,7 @@ public class ProductionDashboardActivity extends AppCompatActivity implements Vi
         gridItemModels.add(new GridItemModel(getString(R.string.material), R.drawable.ic_raw_materials));
         gridItemModels.add(new GridItemModel(getString(R.string.add_product), R.drawable.ic_add_product));
         gridItemModels.add(new GridItemModel(getString(R.string.inventory), R.drawable.ic_inventory));
-        gridItemModels.add(new GridItemModel(getString(R.string.batch), R.drawable.ic_batch));
+        gridItemModels.add(new GridItemModel(getString(R.string.products), R.drawable.ic_products));
         return gridItemModels;
 
     }

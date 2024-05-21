@@ -8,6 +8,7 @@ public class AppConstants {
     public static String KEY_NUMBER = "number";
     public static String RECORD="record";
     public static String RANKING="ranking";
+    public static String LOGIN_KEY="isLogin";
 
     /* %%%% Response Code %%%%% */
     public static int OK = 200;
@@ -18,10 +19,11 @@ public class AppConstants {
     /* %%%% Base Url %%%% */
     public static String BASE_URL = "http://192.168.100.10:5000/api/";
     public static String IMAGE_URL="EmployeeImage/";
+    public static String VIOLATION_IMAGES="EmployeeViolationImage/";
 
     /* %%%% LOGIN API %%%% */
 
-    public static String LOGIN_URL = "User/Login";
+    public static String LOGIN_URL = "Employee/Login";
 
     /* %%%%% SECTION API %%%% */
     public static String SECTION_URL = "Section/GetAllSections";
@@ -40,6 +42,11 @@ public class AppConstants {
     public static String GET_ALL_EMPLOYEES="Employee/GetAllEmployees";
     public static String GET_EMPLOYEE_DETAIL="Employee/GetEmployeeDetail";
     public static String GET_EMPLOYEE_ATTENDANCE="Employee/GetEmployeeAttendance";
+    public static String GET_ALL_VIOLATIONS="Employee/GetAllViolations";
+    public static String GET_EMPLOYEE_SUMMARY="Employee/GetEmployeeSummary";
+    public static String GET_EMPLOYEE_PROFILE="Employee/GetEmployeeProfile";
+    public static String UPDATE_EMPLOYEE_PROFILE="Employee/UpdateEmployeeProfile";
+
 
     /* %%%%% Production API %%%%% */
     public static String GET_ALL_RAW_MATERIAL = "Production/GetAllRawMaterials";
