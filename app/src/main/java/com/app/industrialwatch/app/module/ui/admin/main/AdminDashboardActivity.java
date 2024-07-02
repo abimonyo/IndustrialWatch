@@ -17,8 +17,10 @@ import com.app.industrialwatch.app.module.ui.adapter.ProductionAdapter;
 import com.app.industrialwatch.app.module.ui.admin.production.ProductionActivity;
 import com.app.industrialwatch.app.module.ui.admin.production.ProductionDashboardActivity;
 import com.app.industrialwatch.app.module.ui.admin.section.SectionActivity;
+import com.app.industrialwatch.app.module.ui.authentication.LoginActivity;
 import com.app.industrialwatch.app.module.ui.employee.EmployeeProductivityDashboardActivity;
 import com.app.industrialwatch.app.module.ui.supervisor.SupervisorActivity;
+import com.app.industrialwatch.common.utils.AppConstants;
 import com.app.industrialwatch.databinding.ActivityAdminDashboardBinding;
 
 import java.util.ArrayList;
@@ -41,7 +43,12 @@ public class AdminDashboardActivity extends AppCompatActivity implements View.On
     private void initGridView() {
         binding.gridLayout.girdView.setAdapter(new GridItemAdapter(this, fillGridItems(), this));
         binding.tvName.setText(SharedPreferenceManager.getInstance().read("name",""));
-
+        binding.layoutIncluded.ivLogout.setOnClickListener(v->{
+            SharedPreferenceManager.setSingletonInstance(AdminDashboardActivity.this);
+            SharedPreferenceManager.getInstance().save(AppConstants.LOGIN_KEY,false);
+            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+            finish();
+        });
     }
 
     private ArrayList<GridItemModel> fillGridItems() {

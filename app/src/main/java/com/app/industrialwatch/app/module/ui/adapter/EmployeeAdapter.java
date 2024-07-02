@@ -3,6 +3,7 @@ package com.app.industrialwatch.app.module.ui.adapter;
 import static com.app.industrialwatch.app.business.BaseItem.ITEM_EMPLOYEE_ATTENDANCE;
 import static com.app.industrialwatch.app.business.BaseItem.ITEM_EMPLOYEE_RANKING;
 import static com.app.industrialwatch.app.business.BaseItem.ITEM_EMPLOYEE_RECORD;
+import static com.app.industrialwatch.app.business.BaseItem.ITEM_GUEST;
 import static com.app.industrialwatch.app.business.BaseItem.ITEM_RAW_METERIAL;
 import static com.app.industrialwatch.app.business.BaseItem.ITEM_VIOLATIONS;
 
@@ -31,6 +32,7 @@ import com.app.industrialwatch.databinding.LayoutItemRuleBinding;
 import com.app.industrialwatch.databinding.LayoutItemViolationBinding;
 import com.app.industrialwatch.databinding.LayoutRulesTableBinding;
 import com.app.industrialwatch.databinding.LayoutSectionItemBinding;
+import com.squareup.picasso.Picasso;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -60,6 +62,9 @@ public class EmployeeAdapter extends BaseRecyclerViewAdapter {
         } else if (viewType == ITEM_VIOLATIONS) {
             LayoutItemViolationBinding binding = LayoutItemViolationBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
             holder = new EmployeeViolationHolder(binding);
+        }else if (viewType == ITEM_GUEST) {
+            LayoutItemRankingBinding binding = LayoutItemRankingBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+            holder = new GuestHolder(binding);
         }
         return holder;
     }
@@ -71,9 +76,12 @@ public class EmployeeAdapter extends BaseRecyclerViewAdapter {
             ((EmployeeRecordHolder) holder).binding.tvEmployeeName.setText(model.getName());
             ((EmployeeRecordHolder) holder).binding.tvEmployeeRole.setText(model.getJobRole());
             try {
-                PicassoUtils.picassoLoadImageOrPlaceHolder(context, ((EmployeeRecordHolder) holder).binding.ivEmployeeRecord,
-                        AppConstants.BASE_URL + AppConstants.IMAGE_URL + URLEncoder.encode(model.getImageUrl(), "UTF-8").replace("+", "%20"),
-                        R.drawable.baseline_person_24, 159, 125);
+                Log.d("image==>>",AppConstants.BASE_URL + AppConstants.IMAGE_URL+model.getId()+"/" + URLEncoder.encode(model.getImageUrl(), "UTF-8").replace("+", "%20"));
+//                PicassoUtils.picassoLoadImageOrPlaceHolder(context, ((EmployeeRecordHolder) holder).binding.ivEmployeeRecord,
+//                        AppConstants.BASE_URL + AppConstants.IMAGE_URL+model.getId() +"/"+ URLEncoder.encode(model.getImageUrl(), "UTF-8").replace("+", "%20"),
+//                        R.drawable.baseline_person_24, 159, 125);
+                Picasso.get().load(AppConstants.BASE_URL + AppConstants.IMAGE_URL+model.getId() +"/"+ URLEncoder.encode(model.getImageUrl(), "UTF-8").replace("+", "%20")).into(((EmployeeRecordHolder) holder).binding.ivEmployeeRecord);
+
             } catch (UnsupportedEncodingException e) {
                 Log.d("error==>>", e.getMessage());
             }
@@ -85,6 +93,9 @@ public class EmployeeAdapter extends BaseRecyclerViewAdapter {
         } else if (holder instanceof EmployeeRankingHolder) {
             EmployeeModel model = (EmployeeModel) getItemAt(position);
             ((EmployeeRankingHolder) holder).setData(model, position);
+        } else if (holder instanceof GuestHolder) {
+            EmployeeModel model = (EmployeeModel) getItemAt(position);
+            ((GuestHolder) holder).setData(model, position);
         } else if (holder instanceof EmployeeViolationHolder) {
             ViolationModel model = (ViolationModel) getItemAt(position);
             ((EmployeeViolationHolder) holder).setData(model);
@@ -153,11 +164,44 @@ public class EmployeeAdapter extends BaseRecyclerViewAdapter {
             binding.tvProductivity.setText(model.getProductivity() + "%");
             try {
                 PicassoUtils.picassoLoadImageOrPlaceHolder(context, binding.ivEmployeeImage,
-                        AppConstants.BASE_URL + AppConstants.IMAGE_URL + URLEncoder.encode(model.getImageUrl(), "UTF-8").replace("+", "%20"),
+                        AppConstants.BASE_URL+ AppConstants.IMAGE_URL+model.getId() +"/" + URLEncoder.encode(model.getImageUrl(), "UTF-8").replace("+", "%20"),
                         R.drawable.img_place_holder_ranking, 52, 52);
             } catch (UnsupportedEncodingException e) {
                 Log.d("error==>>", e.getMessage());
             }
+        }
+    }
+    public class GuestHolder extends BaseRecyclerViewHolder {
+        LayoutItemRankingBinding binding;
+
+        @Override
+        protected BaseRecyclerViewHolder populateView() {
+            return null;
+        }
+
+        public GuestHolder(LayoutItemRankingBinding view) {
+            super(view.getRoot(), true);
+            binding = view;
+        }
+
+        public void setData(EmployeeModel model, int pos) {
+
+            binding.ivRank.setVisibility(View.GONE);
+            binding.tvEmployeeName.setText(model.getName());
+            binding.tvProductivity.setVisibility(View.GONE);
+            try {
+                PicassoUtils.picassoLoadImageOrPlaceHolder(context, binding.ivEmployeeImage,
+                        AppConstants.BASE_URL+ AppConstants.IMAGE_URL+model.getId() +"/" + URLEncoder.encode(model.getImageUrl(), "UTF-8").replace("+", "%20"),
+                        R.drawable.img_place_holder_ranking, 52, 52);
+            } catch (UnsupportedEncodingException e) {
+                Log.d("error==>>", e.getMessage());
+            }
+        }
+        @Override
+        public void onClick(View v) {
+            super.onClick(v);
+            if (getItemClickListener() != null)
+                getItemClickListener().onRecyclerViewItemClick(this);
         }
     }
 
@@ -173,16 +217,28 @@ public class EmployeeAdapter extends BaseRecyclerViewAdapter {
             super(view.getRoot(), true);
             binding = view;
         }
-
+        @Override
+        public void onClick(View v) {
+            super.onClick(v);
+            if (getItemClickListener() != null)
+                getItemClickListener().onRecyclerViewItemClick(this);
+        }
         public void setData(ViolationModel model) {
             binding.tvViolationTitle.setText(model.getRuleName());
             binding.tvViolationDate.setText(model.getDate());
-            binding.tvViolationTime.setText(model.getTime());
+            binding.tvViolationTime.setText(model.getImagesList().get(0).getCaptureTime());
             try {
-                PicassoUtils.picassoLoadImageOrPlaceHolder(context, binding.ivViolation,
-                        AppConstants.BASE_URL + AppConstants.VIOLATION_IMAGES + URLEncoder.encode(model.getImagesList().get(0), "UTF-8"),
-                        R.drawable.img_place_holder_ranking, 81, 81);
-            } catch (UnsupportedEncodingException e) {
+                if (model.getImagesList() != null){
+                    String imageUrl = model.getImagesList().get(0).getImageUrl();
+                    String correctedImageUrl = imageUrl.replace("\\", "/");
+
+                    //Log.d("error>>",AppConstants.BASE_URL + AppConstants.VIOLATION_IMAGES + correctedImageUrl);
+                    Picasso.get().load(AppConstants.BASE_URL + AppConstants.VIOLATION_IMAGES + correctedImageUrl).into(binding.ivViolation);
+//                PicassoUtils.picassoLoadImageOrPlaceHolder(context, binding.ivViolation,
+//                        AppConstants.BASE_URL + AppConstants.VIOLATION_IMAGES + correctedImageUrl,
+//                        R.drawable.img_place_holder_ranking, 81, 81);
+            }
+            } catch (Exception e) {
                 Log.d("error==>>", e.getMessage());
             }        }
     }

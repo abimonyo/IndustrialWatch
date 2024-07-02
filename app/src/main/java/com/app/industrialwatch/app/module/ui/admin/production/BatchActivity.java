@@ -138,7 +138,9 @@ public class BatchActivity extends BaseRecyclerViewActivity implements View.OnCl
     public void onRecyclerViewItemClick(BaseRecyclerViewHolder holder) {
         BatchModel model = (BatchModel) batchModelList.get(holder.getLayoutPosition());
         Bundle bundle_ = new Bundle();
+        bundle_.putString(BUNDLE_KEY, bundle.getString(AppConstants.KEY_NUMBER));
         bundle_.putString(AppConstants.KEY_NUMBER, model.getBatch_number());
+
         startActivity(bundle_, BatchDetailActivity.class);
     }
 
@@ -150,7 +152,7 @@ public class BatchActivity extends BaseRecyclerViewActivity implements View.OnCl
     private void downloadDefectedImages() {
         DownloadHelper downloadManagerHelper = new DownloadHelper();
         String productNumber = bundle.getString(AppConstants.KEY_NUMBER);
-        downloadManagerHelper.downloadFile(getApplicationContext(), AppConstants.Get_All_Defected_Images, productNumber);
+        downloadManagerHelper.downloadFile(getApplicationContext(), AppConstants.Get_All_Defected_Images, productNumber,"");
 
     }
 

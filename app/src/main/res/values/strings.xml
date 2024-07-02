@@ -19,6 +19,7 @@
     <string name="employee_record">Employees Record</string>
     <string name="add_employee">Add Employee</string>
     <string name="employee_ranking">Employee Ranking</string>
+    <string name="add_guest">Add Guest</string>
     <string name="attendance">Attendance</string>
     <string name="total_attendance">Total Attendance</string>
     <string name="summary">Summary</string>
@@ -27,6 +28,7 @@
     <string name="employee_monitoring">Employee Monitoring</string>
     <string name="defect_monitoring">Defect Monitoring</string>
     <string name="my_attendance">My Attendance</string>
+    <string name="mark_attendance">Mark Attendance</string>
     <string name="supervisor_dashboard">Supervisor Dashboard</string>
 
 
@@ -41,7 +43,11 @@
     <string name="rejection_tolerance">Rejection Tolerance</string>
     <string name="formula_per_item">Formula per item</string>
     <string name="add_stock">Add Stock</string>
-
+    <string name="multiple_angle_monitoring">Multiple Angle Monitoring</string>
+    <string name="select_front_image">Select Front Image</string>
+    <string name="select_back_image">Select Back Image</string>
+    <string name="select_4_side_images">Select 4 Side Images</string>
+    <string name="back">Back</string>
 
     <string name="add_section">Add Section</string>
     <string name="confirm_section">Confirm Section</string>
@@ -123,4 +129,20 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="profile">Profile</string>
     <string name="products">Products</string>
+    <string name="start_monitoring">Start Monitoring</string>
+    <string name="take_video">Record Video</string>
+    <string name="video_library">Choose Video</string>
+    <string name="product_number">Product#</string>
+    <string name="start_detecting">Start Detecting</string>
+    <string name="hours">Hours</string>
+    <string name="minutes">Minutes</string>
+    <string name="seconds">Seconds</string>
+    <string name="milling">Milling</string>
+    <string name="casting">Casting</string>
+    <string name="tooling">Tooling</string>
+    <string name="defects">Defects</string>
+    <string name="result">Result</string>
+    <string name="smoking">Smoking</string>
+    <string name="mobile_usage">Mobile Usage</string>
+    <string name="sitting">Sitting</string>
 </resources>

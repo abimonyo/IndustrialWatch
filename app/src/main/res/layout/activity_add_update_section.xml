@@ -23,14 +23,23 @@
             android:background="@drawable/bg_grey"
             android:hint="@string/enter_section_name"
             android:textColorHint="@color/black" />
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="is special"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="16dp"
+            android:layout_below="@+id/et_section_name"
+            android:id="@+id/cb_is_special"
+            />
 
         <TextView
             android:id="@+id/tv_rule"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/et_section_name"
+            android:layout_below="@+id/cb_is_special"
             android:layout_marginStart="32dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             android:fontFamily="@font/inter_bold"
             android:text="@string/rules"
             android:textColor="@color/black"

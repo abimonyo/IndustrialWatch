@@ -122,8 +122,9 @@ public class BatchDetailActivity extends BaseActivity implements Callback<Respon
     private void downloadDefectedImages() {
 
         DownloadHelper downloadManagerHelper = new DownloadHelper();
-        String productNumber = bundle.getString(AppConstants.KEY_NUMBER);
-        downloadManagerHelper.downloadFile(getApplicationContext(), AppConstants.Get_All_Defected_Images, productNumber);
+        String productNumber = bundle.getString(AppConstants.BUNDLE_KEY);
+        String batchNumber = bundle.getString(AppConstants.KEY_NUMBER);
+        downloadManagerHelper.downloadFile(getApplicationContext(), AppConstants.Get_Defected_Images_OF_Batch, productNumber,batchNumber);
 
     }
     @Override

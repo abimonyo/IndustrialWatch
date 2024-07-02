@@ -137,6 +137,7 @@ public class RawMaterialActivity extends BaseRecyclerViewActivity implements Cal
                     } else {
                         adapter.clearItems();
                         adapter.addAll(rawMaterialList);
+                        adapter.notifyDataSetChanged();
                     }
                 }
 

@@ -18,6 +18,7 @@ import com.app.industrialwatch.R;
 import com.app.industrialwatch.app.business.BaseItem;
 import com.app.industrialwatch.app.data.models.SectionModel;
 import com.app.industrialwatch.app.data.models.StockModel;
+import com.app.industrialwatch.app.data.preferences.SharedPreferenceManager;
 import com.app.industrialwatch.app.module.ui.adapter.ProductionAdapter;
 import com.app.industrialwatch.app.module.ui.adapter.SectionAdapter;
 import com.app.industrialwatch.common.base.BaseActivity;
@@ -68,15 +69,17 @@ public class SectionActivity extends BaseRecyclerViewActivity implements OnRecyc
         setAdapter(null);
         dialog = getProgressDialog(false);
         showProgressDialog(dialog);
-        doGetRequest(AppConstants.SECTION_URL, getParams("status", 1 + ""), this);
+        doGetRequest(AppConstants.SECTION_URL, getMultipleParams(), this);
+
+    }
+    private Map<String, String> getMultipleParams() {
+        Map<String, String> params = new HashMap<>();
+        params.put("status", 1+"");
+        params.put("is_special","true");
+        return params;
 
     }
 
-    /*private Map<String, String> getServerParams() {
-        Map<String, String> params = new HashMap<>();
-        params.put("status", 1 + "");
-        return params;
-    }*/
 
     private void initView() {
         binding.btnAddSection.setOnClickListener(this);

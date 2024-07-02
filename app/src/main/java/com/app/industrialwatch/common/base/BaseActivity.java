@@ -21,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.app.industrialwatch.R;
+import com.app.industrialwatch.app.business.BaseItem;
 import com.app.industrialwatch.app.data.models.SectionModel;
 import com.app.industrialwatch.app.network.ApiService;
 import com.app.industrialwatch.app.network.RetrofitClient;
@@ -71,6 +72,15 @@ public class BaseActivity extends AppCompatActivity {
         findViewById(R.id.iv_back_toolbar).setOnClickListener(view -> {
             finish();
         });
+
+    }   public void setSecondaryActionBar(Toolbar toolbar, String title,boolean hideButton) {
+        TextView tvTitle = toolbar.findViewById(R.id.tv_title_secondary);
+        if (tvTitle != null && title != null)
+            tvTitle.setText(title);
+        findViewById(R.id.iv_back_toolbar).setOnClickListener(view -> {
+            finish();
+        });
+        findTextViewById(R.id.btn_secondary_toolbar).setVisibility(hideButton?View.GONE:View.VISIBLE);
 
     }
     public Toolbar getToolbar(){
@@ -190,6 +200,9 @@ public class BaseActivity extends AppCompatActivity {
     public void doPostRequestWithMapBody(String url, Map<String, RequestBody> parts, List<MultipartBody.Part> imageParts, Callback<ResponseBody> callback) {
         Call<ResponseBody> call = RetrofitClient.getRetrofitInstance().create(ApiService.class).doPostRequestWithMapBody(url, parts, imageParts);
         call.enqueue(callback);
+    }    public void doPostMultipartBody(String url,  List<MultipartBody.Part> imageParts, Callback<ResponseBody> callback) {
+        Call<ResponseBody> call = RetrofitClient.getRetrofitInstance().create(ApiService.class).doPostMultipartBody(url, imageParts);
+        call.enqueue(callback);
     }
 
     public void showErrorMessage(Response<ResponseBody> response) {
@@ -206,8 +219,8 @@ public class BaseActivity extends AppCompatActivity {
         params.put(key, value);
         return params;
     }
-    public void setSpinnerAdapter(List<SectionModel> batchModels, Spinner spinner, AdapterView.OnItemSelectedListener listener) {
-        ArrayAdapter<SectionModel> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, batchModels);
+    public void setSpinnerAdapter(List<BaseItem> batchModels, Spinner spinner, AdapterView.OnItemSelectedListener listener) {
+        ArrayAdapter<BaseItem> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, batchModels);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(listener);

@@ -19,6 +19,7 @@
             android:layout_margin="16dp"
             android:fontFamily="@font/inter_bold"
             android:text="@string/violations"
+            android:id="@+id/tv_violation"
             android:textSize="22sp" />
 
         <include

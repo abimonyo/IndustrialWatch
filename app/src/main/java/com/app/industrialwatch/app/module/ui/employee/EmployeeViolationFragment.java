@@ -1,6 +1,7 @@
 package com.app.industrialwatch.app.module.ui.employee;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -48,7 +49,7 @@ public class EmployeeViolationFragment extends BaseRecyclerViewFragment implemen
     FragmentEmployeeViolationBinding binding;
     Dialog dialog;
     EmployeeAdapter adapter;
-
+    List<BaseItem> violationModelList;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -111,7 +112,7 @@ public class EmployeeViolationFragment extends BaseRecyclerViewFragment implemen
             try {
                 if (call.request().url().url().toString().contains(AppConstants.GET_ALL_VIOLATIONS)) {
                     JSONArray array = new JSONArray(response.body().string());
-                    List<BaseItem> violationModelList=new Gson().fromJson(array.toString(),new TypeToken<List<ViolationModel>>(){}.getType());
+                    violationModelList=new Gson().fromJson(array.toString(),new TypeToken<List<ViolationModel>>(){}.getType());
                     if (adapter==null){
                         adapter=new EmployeeAdapter(violationModelList,this,this.getContext()
                         );
@@ -140,7 +141,12 @@ public class EmployeeViolationFragment extends BaseRecyclerViewFragment implemen
 
     @Override
     public void onRecyclerViewItemClick(BaseRecyclerViewHolder holder) {
-
+        ViolationModel model1=(ViolationModel) violationModelList.get(holder.getLayoutPosition());
+        Bundle bundle1=new Bundle();
+        bundle1.putInt(AppConstants.BUNDLE_KEY,model1.getViolationId());
+        Intent intent=new Intent(getContext(), ViolationDetailActivity.class);
+        intent.putExtras(bundle1);
+        getContext().startActivity(intent);
     }
 
     @Override

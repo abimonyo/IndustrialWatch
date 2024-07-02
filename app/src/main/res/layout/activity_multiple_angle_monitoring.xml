@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    tools:context=".app.module.ui.supervisor.MultipleAngleMonitoringActivity">
+
+    <include layout="@layout/layout_secondary_toolbar"
+        android:id="@+id/included_toolbar"/>
+
+    <!-- Select Front Image button -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_below="@+id/included_toolbar"
+        android:layout_marginTop="16dp"
+        android:id="@+id/layout_wrapper_front_back_button"
+        >
+
+
+    <Button
+        android:id="@+id/selectFrontImageButton"
+        android:layout_width="0dp"
+        style="@style/ButtonWithoutPadding"
+        android:padding="10dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="@string/select_front_image" />
+
+    <!-- Select Back Image button -->
+    <Button
+        android:id="@+id/selectBackImageButton"
+        style="@style/ButtonWithoutPadding"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:padding="10dp"
+        android:layout_height="wrap_content"
+        android:text="@string/select_back_image" />
+    </LinearLayout>
+    <!-- Front and Back images -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_wrapper_front_back_button"
+        android:layout_marginTop="16dp"
+        android:padding="10dp"
+        android:id="@+id/layout_wrapper_front_back_iv"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/frontImageView"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+             />
+
+        <ImageView
+            android:id="@+id/backImageView"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:scaleType="centerInside"
+             />
+    </LinearLayout>
+
+    <!-- Select 4 Side Images button -->
+    <Button
+        android:id="@+id/selectSideImagesButton"
+        style="@style/ButtonPrimaryStyle"
+        android:layout_width="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_wrapper_front_back_iv"
+        android:layout_marginTop="16dp"
+        android:text="@string/select_4_side_images" />
+
+    <!-- Side Images -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/selectSideImagesButton"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:id="@+id/layout_wrapper_side_images"
+        android:weightSum="4">
+
+        <ImageView
+            android:id="@+id/sideImageView1"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+             />
+
+        <ImageView
+            android:id="@+id/sideImageView2"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:scaleType="centerInside"
+             />
+
+        <ImageView
+            android:id="@+id/sideImageView3"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:scaleType="centerInside"
+             />
+
+        <ImageView
+            android:id="@+id/sideImageView4"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:scaleType="centerInside"
+             />
+    </LinearLayout>
+
+    <!-- Start Monitoring button -->
+    <Button
+        android:id="@+id/startMonitoringButton"
+        android:layout_width="wrap_content"
+        style="@style/ButtonPrimaryStyle"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_below="@+id/layout_wrapper_side_images"
+        android:layout_marginTop="16dp"
+        android:text="@string/start_monitoring" />
+
+
+</RelativeLayout>
+</layout>

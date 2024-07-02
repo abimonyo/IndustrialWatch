@@ -5,6 +5,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -40,7 +41,14 @@ public class EmployeeDashboardActivity extends BaseActivity implements View.OnCl
     @Override
     public void onClick(View v) {
         if (v.getId() == binding.fab.getId()) {
-            controller.navigate(R.id.employeeSummaryFragment);
+          // controller.navigate(R.id.employeeSummaryFragment);
+            startActivity(new Intent(getApplicationContext(),EmployeeSummaryActivity.class));
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
     }
 }

@@ -134,12 +134,17 @@ public class SectionAdapter extends BaseRecyclerViewAdapter {
             etFine = binding.etRuleItemFine;
             etTime = binding.etRuleItemTime;
             checkBox = binding.cbRuleItem;
+            etTime.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
             super.onClick(v);
-            if (getItemClickListener() != null)
+            if (v.getId()==binding.etRuleItemTime.getId()){
+                if (getItemClickListener() != null)
+                    getItemClickListener().onRecyclerViewChildItemClick(this, binding.etRuleItemTime.getId());
+            }
+          else  if (getItemClickListener() != null)
                 getItemClickListener().onRecyclerViewItemClick(RuleHolder.this);
         }
 

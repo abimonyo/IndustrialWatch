@@ -14,6 +14,7 @@ public interface BaseItem {
     int ITEM_EMPLOYEE_ATTENDANCE = 10;
     int ITEM_EMPLOYEE_RANKING = 11;
     int ITEM_VIOLATIONS = 12;
+    int ITEM_GUEST = 13;
 
     int getItemType();
 }

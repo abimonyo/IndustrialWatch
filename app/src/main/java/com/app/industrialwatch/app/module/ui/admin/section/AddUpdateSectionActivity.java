@@ -6,13 +6,18 @@ import static com.app.industrialwatch.common.utils.AppConstants.INSERT_SECTION;
 import static com.app.industrialwatch.common.utils.AppConstants.UPDATE_SECTION;
 import static com.app.industrialwatch.common.utils.AppUtils.validateEmptyEditText;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
@@ -20,6 +25,7 @@ import com.app.industrialwatch.R;
 import com.app.industrialwatch.app.business.BaseItem;
 import com.app.industrialwatch.app.data.models.RulesModel;
 import com.app.industrialwatch.app.module.ui.adapter.SectionAdapter;
+import com.app.industrialwatch.app.module.ui.dialoge.TimeInputDialog;
 import com.app.industrialwatch.common.base.recyclerview.BaseRecyclerViewActivity;
 import com.app.industrialwatch.common.base.recyclerview.BaseRecyclerViewHolder;
 import com.app.industrialwatch.common.base.recyclerview.OnRecyclerViewItemClickListener;
@@ -47,7 +53,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AddUpdateSectionActivity extends BaseRecyclerViewActivity implements OnRecyclerViewItemClickListener, Callback<ResponseBody>, View.OnClickListener, TextWatcher {
+public class AddUpdateSectionActivity extends BaseRecyclerViewActivity implements OnRecyclerViewItemClickListener, Callback<ResponseBody>, View.OnClickListener, TextWatcher, View.OnTouchListener {
     ActivityAddUpdateSectionBinding binding;
     SectionAdapter adapter;
     List<RulesModel> insertedRuleList;
@@ -56,6 +62,8 @@ public class AddUpdateSectionActivity extends BaseRecyclerViewActivity implement
     List<BaseItem> ruleNameList;
     private boolean isManualChange = false;
     Dialog dialog;
+    int resId, pos;
+    BaseRecyclerViewHolder holder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,8 +74,10 @@ public class AddUpdateSectionActivity extends BaseRecyclerViewActivity implement
         setPrimaryActionBar(binding.toolbar.primaryToolbar, getString(R.string.add_section));
         initRecyclerView(binding.recyclerView.recyclerView);
         initView();
-        if (getIntent().getExtras() != null)
+        if (getIntent().getExtras() != null) {
+            binding.cbIsSpecial.setVisibility(View.GONE);
             bundle = getIntent().getExtras();
+        }
     }
 
     private void initView() {
@@ -96,6 +106,7 @@ public class AddUpdateSectionActivity extends BaseRecyclerViewActivity implement
         return params;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onRecyclerViewItemClick(BaseRecyclerViewHolder holder) {
         RulesModel model = (RulesModel) adapter.getItemAt(holder.getLayoutPosition());
@@ -103,6 +114,7 @@ public class AddUpdateSectionActivity extends BaseRecyclerViewActivity implement
         etAllowedTime = holder.itemView.findViewById(R.id.et_rule_item_time);
        /* etAllowedTime.setFilters(new InputFilter[]{new InputFilter.LengthFilter(5)});
         etAllowedTime.addTextChangedListener(this);*/
+        etAllowedTime.setOnTouchListener(AddUpdateSectionActivity.this);
         CheckBox checkBox = holder.itemView.findViewById(R.id.cb_rule_item);
         if (model.getAllowedTime() != null && model.getFine() != null) {
             if (checkBox.isChecked()) {
@@ -128,6 +140,19 @@ public class AddUpdateSectionActivity extends BaseRecyclerViewActivity implement
 
     @Override
     public void onRecyclerViewChildItemClick(BaseRecyclerViewHolder holder, int resourceId) {
+        int resId = holder.itemView.findViewById(resourceId).getId();
+        findTextViewById(resourceId).setInputType(InputType.TYPE_NULL);
+        //findTextViewById(resourceId).setOnFocusChangeListener(this);
+        // this.holder=holder;
+        pos = holder.getLayoutPosition();
+        showToast(pos + "");
+        TimeInputDialog dialog1 = new TimeInputDialog(AddUpdateSectionActivity.this, time -> {
+            EditText etTime = holder.itemView.findViewById(resourceId);
+            etTime.setText(time);
+            RulesModel model = (RulesModel) adapter.getItemAt(holder.getLayoutPosition());
+            model.setAllowedTime(time);
+        });
+        dialog1.show();
     }
 
 
@@ -204,6 +229,7 @@ public class AddUpdateSectionActivity extends BaseRecyclerViewActivity implement
                 try {
 
                     requestJson.put("name", sectionName);
+                    requestJson.put("is_special",binding.cbIsSpecial.isChecked()?1+"":0+"");
                     JSONArray jsonArray = new JSONArray();
                     for (RulesModel rules : insertedRuleList) {
                         JSONObject object = new JSONObject();
@@ -308,5 +334,24 @@ public class AddUpdateSectionActivity extends BaseRecyclerViewActivity implement
 
         }*/
 
+    }
+
+    /*@Override
+    public void onTimeInput(String time) {
+        if (resId!=0){
+            showToast(time);
+            findTextViewById(resId).setText(time);
+            //adapter.notifyItemChanged(pos);
+        }
+    }*/
+
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        int inputType = etAllowedTime.getInputType();
+        etAllowedTime.setInputType(InputType.TYPE_NULL);
+        etAllowedTime.onTouchEvent(event);
+        etAllowedTime.setInputType(inputType);
+        return true; // Consume the touch event
     }
 }

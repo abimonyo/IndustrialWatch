@@ -25,6 +25,7 @@ import retrofit2.http.QueryMap;
 import retrofit2.http.Url;
 
 public interface ApiService {
+
     @Headers("Content-Type: application/json")
     @GET
     Call<ResponseBody> doGetRequest(@Url String url, @QueryMap Map<String, String> queryParams);
@@ -51,6 +52,9 @@ public interface ApiService {
     Call<ResponseBody> doPostRequestWithMapBody(@Url String url
             , @PartMap Map<String, RequestBody> partBody
             , @Part List<MultipartBody.Part> imagePart);
+    @Multipart
+    @POST
+    Call<ResponseBody> doPostMultipartBody(@Url String url,@Part List<MultipartBody.Part> imagePart);
 
     @GET
     Call<ResponseBody> downloadFile(@Url String url, @QueryMap Map<String, String> queryParams);

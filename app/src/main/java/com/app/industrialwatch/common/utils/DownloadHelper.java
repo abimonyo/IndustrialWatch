@@ -2,6 +2,7 @@ package com.app.industrialwatch.common.utils;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.app.DownloadManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -38,18 +39,21 @@ import retrofit2.Retrofit;
 
 public class DownloadHelper extends BaseActivity {
     private final ApiService apiService;
+    Dialog dialog;
 
     public DownloadHelper() {
         // Create Retrofit instance
         Retrofit retrofit = RetrofitClient.getRetrofitInstance();
         // Create ApiService instance
         apiService = retrofit.create(ApiService.class);
+        //dialog=getProgressDialog(false);
     }
 
-    public void downloadFile(Context context, String url, String productNumber) {
+    public void downloadFile(Context context, String url, String productNumber,String batchNumber) {
         // Make API call to download the file
         Toast.makeText(context, "Download Started.", Toast.LENGTH_SHORT).show();
-        Call<ResponseBody> call = apiService.downloadFile(url, getServerParam(productNumber));
+        //showProgressDialog(dialog);
+        Call<ResponseBody> call = apiService.downloadFile(url, getServerParam(productNumber,batchNumber));
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -61,13 +65,17 @@ public class DownloadHelper extends BaseActivity {
                     showErrorMessage(response);
                     Log.e("DownloadManager", "Download failed: " + response.message());
                 }
+               // cancelDialog(dialog);
+
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 // Handle failure
-                Toast.makeText(DownloadHelper.this, "Download failed:Try again.", Toast.LENGTH_SHORT).show();
+
+                //Toast.makeText(DownloadHelper.this, "Download failed:Try again.", Toast.LENGTH_SHORT).show();
                // showToast("");
+               // cancelDialog(dialog);
 
                 Log.e("DownloadManager", "Download failed: " + t.getMessage());
             }
@@ -184,9 +192,10 @@ public class DownloadHelper extends BaseActivity {
     }
 
 
-    private Map<String, String> getServerParam(String number) {
+    private Map<String, String> getServerParam(String number,String bNumber) {
         Map<String, String> params = new HashMap<>();
         params.put("product_number", number);
+        params.put("batch_number",bNumber);
         return params;
     }
 }

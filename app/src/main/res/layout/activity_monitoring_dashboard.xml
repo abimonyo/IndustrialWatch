@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1"
+    android:orientation="vertical"
+    tools:context=".app.module.ui.supervisor.MonitoringDashboardActivity">
+    <!-- Image View for Conveyor Belt Illustration -->
+    <include layout="@layout/layout_secondary_toolbar"
+        android:id="@+id/included_toolbar"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:id="@+id/layout_wrapper_iv"
+        android:orientation="vertical">
+    <ImageView
+        android:id="@+id/conveyor_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:src="@drawable/ic_defect_monitoring" />
+    </LinearLayout>
+    <!-- Single Disc Monitoring Button -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:gravity="center">
+        <Button
+            android:id="@+id/single_disc_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/ButtonWithoutPadding"
+            android:padding="15dp"
+            android:text="Single Disc Monitoring"
+            android:textColor="@android:color/white"
+            />
+        <!-- Batch Monitoring Button -->
+        <Button
+            android:id="@+id/batch_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Batch Monitoring"
+            android:textColor="@android:color/white"
+            style="@style/ButtonWithoutPadding"
+            android:padding="15dp" />
+    </LinearLayout>
+</LinearLayout>
+
+</layout>

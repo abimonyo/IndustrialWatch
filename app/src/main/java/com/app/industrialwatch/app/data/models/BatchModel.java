@@ -4,7 +4,7 @@ import com.app.industrialwatch.app.business.BaseItem;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class BatchModel implements BaseItem {
+public class BatchModel implements BaseItem, Comparable<BatchModel> {
     @SerializedName("name")
     @Expose
     String name;
@@ -59,11 +59,16 @@ public class BatchModel implements BaseItem {
 
     @Override
     public String toString() {
-        return name; // Or any other property you want to display
+        return name==null?batch_number:name; // Or any other property you want to display
     }
 
     @Override
     public int getItemType() {
         return BaseItem.ITEM_BATCH_NUMBER;
+    }
+    @Override
+    public int compareTo(BatchModel other) {
+        // Sort by status, prioritizing status == 0
+        return Integer.compare(this.status, other.status);
     }
 }

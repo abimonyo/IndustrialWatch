@@ -92,15 +92,19 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                 switch (role) {
                     case "Supervisor":
                         startActivity(new Intent(getApplicationContext(), SupervisorDashboardActivity.class));
+                        finish();
                         break;
                     case "Employee":
                         startActivity(new Intent(getApplicationContext(), EmployeeDashboardActivity.class));
+                        finish();
                         break;
                     default:
                         startActivity(new Intent(getApplicationContext(), AdminDashboardActivity.class));
+                        finish();
                         break;
 
                 }
+
 
             } catch (JSONException | IOException e) {
                 Log.d("error==>>", e.getMessage());

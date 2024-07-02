@@ -22,7 +22,41 @@ public class ViolationModel implements BaseItem, Serializable {
     String time;
     @SerializedName("images")
     @Expose
-    List<String> imagesList;
+    List<ImageModel> imagesList;
+    @SerializedName("start_time")
+    @Expose
+    private String startTime;
+
+    @SerializedName("end_time")
+    @Expose
+    private String endTime;
+    @SerializedName("fine")
+    @Expose
+    private double fine;
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+
+    public double getFine() {
+        return fine;
+    }
+
+    public void setFine(double fine) {
+        this.fine = fine;
+    }
 
     public int getViolationId() {
         return violationId;
@@ -56,16 +90,41 @@ public class ViolationModel implements BaseItem, Serializable {
         this.time = time;
     }
 
-    public List<String> getImagesList() {
+    public List<ImageModel> getImagesList() {
         return imagesList;
     }
 
-    public void setImagesList(List<String> imagesList) {
+    public void setImagesList(List<ImageModel> imagesList) {
         this.imagesList = imagesList;
     }
 
     @Override
     public int getItemType() {
         return ITEM_VIOLATIONS;
+    }
+    public static class ImageModel {
+        @SerializedName("capture_time")
+        @Expose
+        private String captureTime;
+
+        @SerializedName("image_url")
+        @Expose
+        private String imageUrl;
+
+        public String getCaptureTime() {
+            return captureTime;
+        }
+
+        public void setCaptureTime(String captureTime) {
+            this.captureTime = captureTime;
+        }
+
+        public String getImageUrl() {
+            return imageUrl;
+        }
+
+        public void setImageUrl(String imageUrl) {
+            this.imageUrl = imageUrl;
+        }
     }
 }

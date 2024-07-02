@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.app.industrialwatch.R;
 import com.app.industrialwatch.app.data.models.EmployeeModel;
+import com.app.industrialwatch.app.data.preferences.SharedPreferenceManager;
 import com.app.industrialwatch.common.base.BaseActivity;
 import com.app.industrialwatch.common.utils.AppConstants;
 import com.app.industrialwatch.common.utils.CalendarUtils;
@@ -53,7 +54,7 @@ public class EmployeeSummaryActivity extends BaseActivity implements View.OnClic
     }
 
     private void initView() {
-        setPrimaryActionBar(binding.includedToolbar.primaryToolbar, model.getName());
+        setPrimaryActionBar(binding.includedToolbar.primaryToolbar,model!=null?model.getName():"");
         binding.includedLayout.tvYear.setOnClickListener(this);
         binding.includedLayout.tvMonth.setOnClickListener(this);
         builder = new StringBuilder();
@@ -62,7 +63,7 @@ public class EmployeeSummaryActivity extends BaseActivity implements View.OnClic
     @Override
     protected void onResume() {
         super.onResume();
-        if (model != null) {
+        //if (model != null) {
             dialog = getProgressDialog(false);
             showProgressDialog(dialog);
             int currentYear = Calendar.getInstance().get(Calendar.YEAR);
@@ -70,12 +71,12 @@ public class EmployeeSummaryActivity extends BaseActivity implements View.OnClic
             binding.includedLayout.tvYear.setText(currentYear + "");
             binding.includedLayout.tvMonth.setText(CalendarUtils.getCurrentMonthShort());
             doGetRequest(AppConstants.GET_EMPLOYEE_SUMMARY, getMultipleParams((currentMonth + 1) + "," + currentYear), this);
-        }
+       // }
     }
 
     private Map<String, String> getMultipleParams(String date) {
         Map<String, String> params = new HashMap<>();
-        params.put("employee_id", model.getId() + "");
+        params.put("employee_id", model!=null?model.getId()+"": SharedPreferenceManager.getInstance().read("id", 0) + "");
         params.put("date", date);
         return params;
 

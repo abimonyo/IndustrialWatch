@@ -12,6 +12,7 @@ import com.app.industrialwatch.app.module.ui.adapter.GridItemAdapter;
 import com.app.industrialwatch.app.module.ui.admin.production.InventoryActivity;
 import com.app.industrialwatch.app.module.ui.admin.production.ProductActivity;
 import com.app.industrialwatch.app.module.ui.admin.production.RawMaterialActivity;
+import com.app.industrialwatch.app.module.ui.guest.GuestActivity;
 import com.app.industrialwatch.common.base.BaseActivity;
 import com.app.industrialwatch.common.utils.AppConstants;
 import com.app.industrialwatch.databinding.ActivityEmployeeProductivityDashboardBinding;
@@ -45,6 +46,7 @@ public class EmployeeProductivityDashboardActivity extends BaseActivity implemen
         gridItemModels.add(new GridItemModel(getString(R.string.add_employee), R.drawable.ic_add_employee));
         gridItemModels.add(new GridItemModel(getString(R.string.employee_record), R.drawable.ic_employee_record));
         gridItemModels.add(new GridItemModel(getString(R.string.employee_ranking), R.drawable.ic_employee_ranking));
+        gridItemModels.add(new GridItemModel("Guest", R.drawable.img_place_holder_ranking));
         return gridItemModels;
 
     }
@@ -59,6 +61,8 @@ public class EmployeeProductivityDashboardActivity extends BaseActivity implemen
             Bundle bundle = new Bundle();
             bundle.putString(AppConstants.FROM, AppConstants.RANKING);
             startActivity(bundle, EmployeeRecordActivity.class);
+        }else if ((int) v.getTag() == 3) {
+            startActivity(new Intent(getApplicationContext(), GuestActivity.class));
         }
     }
 }

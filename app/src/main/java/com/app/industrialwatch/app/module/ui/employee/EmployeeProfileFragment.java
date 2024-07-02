@@ -114,9 +114,10 @@ public class EmployeeProfileFragment extends BaseFragment implements Callback<Re
             try {
                 if (call.request().url().url().toString().contains(AppConstants.GET_EMPLOYEE_PROFILE)) {
                     JSONObject object = new JSONObject(response.body().string());
+                    Log.d("image==>.",AppConstants.BASE_URL+ AppConstants.IMAGE_URL +SharedPreferenceManager.getInstance().read("id",0) +"/"+ URLEncoder.encode(object.getString("image"), "UTF-8").replace("+", "%20"));
                     PicassoUtils.picassoLoadImageOrPlaceHolder(this.getContext(), binding.ivEmployeeProfile,
-                            AppConstants.BASE_URL + AppConstants.IMAGE_URL + URLEncoder.encode(object.getString("image"), "UTF-8").replace("+", "%20"),
-                            R.drawable.baseline_person_24, 150, 150);
+                            AppConstants.BASE_URL+ AppConstants.IMAGE_URL+SharedPreferenceManager.getInstance().read("id",0) +"/" + URLEncoder.encode(object.getString("image"), "UTF-8").replace("+", "%20"),
+                            R.drawable.img_place_holder_ranking, 150, 150);
                     binding.tvJobRole.setText(object.getString("job_role"));
                     binding.tvJobType.setText(object.getString("job_type"));
                     binding.tvName.setText(object.getString("name"));

@@ -19,14 +19,17 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.core.content.FileProvider;
 
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.app.industrialwatch.R;
 import com.app.industrialwatch.common.utils.PermissionUtils;
 
 import java.io.File;
@@ -58,6 +61,7 @@ public class TakePhotoActivity extends BaseActivity {
 
     public Uri selectedPhotoUri;
     public ActivityResultLauncher<Intent> imagePickerLauncher;
+    public boolean isVideo = false;
 
     public void initializeImagePicker() {
         imagePickerLauncher = this.registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
@@ -65,6 +69,8 @@ public class TakePhotoActivity extends BaseActivity {
             public void onActivityResult(ActivityResult o) {
                 if (o.getResultCode() == Activity.RESULT_OK) {
                     if (o.getData() != null) {
+                        if (selectedPhotoUri==null)
+                            selectedPhotoUri=o.getData().getData();
                         handlePhotoResult();
                     } else
                         handlePhotoResult();
@@ -76,28 +82,95 @@ public class TakePhotoActivity extends BaseActivity {
         });
     }
 
+    protected void showChooseVideoDialog() {
+        final Dialog dialog = new Dialog(this, R.style.DialogSlideAnim);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        final Window window = dialog.getWindow();
+        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+        window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        window.addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+        window.setGravity(Gravity.BOTTOM);
+      /*  Window window = dialog.getWindow();
+        WindowManager.LayoutParams wlp = window.getAttributes();
+        wlp.gravity = Gravity.BOTTOM;
+        wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+        window.setAttributes(wlp);*/
+        dialog.setContentView(R.layout.choose_photo_dialog);
+        LinearLayout useCamera = (LinearLayout) dialog.findViewById(R.id.ll_use_camera);
+        LinearLayout uploadPhoto = (LinearLayout) dialog
+                .findViewById(R.id.ll_photo_library);
+        isVideo = true;
+        useCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    if (PermissionUtils.checkAndRequestPermissions(TakePhotoActivity.this
+                            , new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_MEDIA_IMAGES, Manifest.permission.READ_MEDIA_VIDEO}, TAKE_PHOTO_PERMISSION))
+                        dispatchRecordVideoIntent();
+                } else {
+                    if (PermissionUtils.checkAndRequestPermissions(TakePhotoActivity.this
+                            , new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE,
+                                    Manifest.permission.WRITE_EXTERNAL_STORAGE}, TAKE_PHOTO_PERMISSION))
+                        dispatchRecordVideoIntent();
+                }
+            }
+        });
+
+        uploadPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    if (PermissionUtils.checkAndRequestPermissions(TakePhotoActivity.this
+                            , new String[]{Manifest.permission.READ_MEDIA_IMAGES, Manifest.permission.READ_MEDIA_VIDEO}, CHOOSE_PHOTO_PERMISSION))
+//                    checkAndDispatchGalleryIntent();
+                        dispatchChoosePictureIntent("video", false);
+                } else {
+                    if (PermissionUtils.checkAndRequestPermissions(TakePhotoActivity.this
+                            , new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
+                                    Manifest.permission.WRITE_EXTERNAL_STORAGE}, CHOOSE_PHOTO_PERMISSION))
+//                    checkAndDispatchGalleryIntent();
+                        dispatchChoosePictureIntent("video", false);
+                }
+            }
+        });
+
+        dialog.findViewById(R.id.ll_cancel_dialog).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+
 
     /**
      * show user dialog to select either open camera Or gallery
      */
-    protected void showChoosePhotoDialog() {
+    protected void showChoosePhotoDialog(boolean isMultipleFiles) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (PermissionUtils.checkAndRequestPermissions(TakePhotoActivity.this
-                    , new String[]{Manifest.permission.READ_MEDIA_IMAGES}, CHOOSE_PHOTO_PERMISSION))
-                dispatchChoosePictureIntent();
+                    , new String[]{Manifest.permission.READ_MEDIA_IMAGES, Manifest.permission.READ_MEDIA_VIDEO}, CHOOSE_PHOTO_PERMISSION))
+                dispatchChoosePictureIntent("image", isMultipleFiles);
         } else {
             if (PermissionUtils.checkAndRequestPermissions(TakePhotoActivity.this
                     , new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
                             Manifest.permission.WRITE_EXTERNAL_STORAGE}, CHOOSE_PHOTO_PERMISSION))
-                dispatchChoosePictureIntent();
+                dispatchChoosePictureIntent("image", isMultipleFiles);
         }
     }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == CHOOSE_PHOTO_PERMISSION && PermissionUtils.verifyPermission(grantResults)) {
-            dispatchChoosePictureIntent();
+            if (isVideo)
+                dispatchChoosePictureIntent("video", false);
+            else
+                dispatchChoosePictureIntent("image", true);
         } else
             showToast("permission not granted.");
     }
@@ -110,15 +183,16 @@ public class TakePhotoActivity extends BaseActivity {
     /**
      * create and call open camera intent
      */
-   /* public void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+    public void dispatchRecordVideoIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
         File photo = getPhotoFile();
         if (photo != null && takePictureIntent.resolveActivity(TakePhotoActivity.this.getPackageManager()) != null) {
-            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, selectedPhotoUri = Uri.fromFile(photo));
+            //takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, selectedPhotoUri = FileProvider.getUriForFile(getApplicationContext(), getPackageName()+".fileprovider", photo));
             imagePickerLauncher.launch(takePictureIntent);
             //startActivityForResult(Intent.createChooser(takePictureIntent, ""), TAKE_PHOTO_RESULT_CODE);
         }
-    }*/
+    }
+
     private void handlePhotoResult() {
         Intent resultIntent = new Intent();
         resultIntent.setData(selectedPhotoUri);
@@ -129,10 +203,10 @@ public class TakePhotoActivity extends BaseActivity {
     /**
      * create and open choose from gallery/photos intent
      */
-    public void dispatchChoosePictureIntent() {
+    public void dispatchChoosePictureIntent(String type, boolean isMultipleFile) {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("image/*");
-        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        intent.setType(type + "/*");
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, isMultipleFile);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         imagePickerLauncher.launch(intent);
     }
@@ -143,9 +217,9 @@ public class TakePhotoActivity extends BaseActivity {
      *
      * @return created file in device storage
      */
-    /*final public File getPhotoFile() {
-        String timeStamp = DateUtils.convertDate(System.currentTimeMillis(), DateUtils.FILE_NAME);
-        String imageFileName = "IMG" + timeStamp + "";
+    final public File getPhotoFile() {
+       // String timeStamp = DateUtils.convertDate(System.currentTimeMillis(), DateUtils.FILE_NAME);
+        String imageFileName = "IMG" + "hello";
         File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
         File photoFile = null;
         try {
@@ -155,8 +229,8 @@ public class TakePhotoActivity extends BaseActivity {
             photoFile = File.createTempFile(imageFileName, ".jpg", storageDir);
 
         } catch (IOException e) {
-            Logger.caughtException(e);
+//            Logger.caughtException(e);
         }
         return photoFile;
-    }*/
+    }
 }

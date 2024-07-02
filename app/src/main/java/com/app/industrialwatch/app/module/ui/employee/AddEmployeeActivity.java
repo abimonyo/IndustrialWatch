@@ -17,6 +17,7 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 
 import com.app.industrialwatch.R;
+import com.app.industrialwatch.app.business.BaseItem;
 import com.app.industrialwatch.app.data.models.BatchModel;
 import com.app.industrialwatch.app.data.models.RawMaterialModel;
 import com.app.industrialwatch.app.data.models.SectionModel;
@@ -53,8 +54,8 @@ import retrofit2.Response;
 public class AddEmployeeActivity extends TakePhotoActivity implements View.OnClickListener, Callback<ResponseBody>, AdapterView.OnItemSelectedListener, RadioGroup.OnCheckedChangeListener {
 
     ActivityAddEmployeeBinding binding;
-    List<SectionModel> sectionModelList;
-    List<SectionModel> jobRoleModelList;
+    List<BaseItem> sectionModelList;
+    List<BaseItem> jobRoleModelList;
     int selectedSectionId, selectedRoleId;
     String selectedGender, selectedJobType;
     ClipData clipData;
@@ -98,7 +99,8 @@ public class AddEmployeeActivity extends TakePhotoActivity implements View.OnCli
     @Override
     public void onClick(View v) {
         if (v.equals(binding.ivEmployeeProfile)) {
-            showChoosePhotoDialog();
+
+            showChoosePhotoDialog(true);
         } else if (v.getId() == binding.btnAddEmployee.getId()) {
             validateAndCallApi();
         }
@@ -254,10 +256,13 @@ public class AddEmployeeActivity extends TakePhotoActivity implements View.OnCli
         Spinner spinner = (Spinner) parent;
         if (spinner.getId() == binding.spSection.getId()) {
             if (sectionModelList != null && sectionModelList.size() > 0 && position != 0) {
-                selectedSectionId = sectionModelList.get(position).getId();
+                SectionModel model=(SectionModel)sectionModelList.get(position);
+                selectedSectionId =model.getId();
             }
         } else if (jobRoleModelList != null && jobRoleModelList.size() > 0 && position != 0) {
-            selectedRoleId = jobRoleModelList.get(position).getId();
+            SectionModel model=(SectionModel)jobRoleModelList.get(position);
+
+            selectedRoleId = model.getId();
         }
     }
 

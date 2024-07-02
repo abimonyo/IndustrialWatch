@@ -41,7 +41,7 @@ import retrofit2.Response;
 public class EmployeeRecordActivity extends BaseRecyclerViewActivity implements Callback<ResponseBody>, AdapterView.OnItemSelectedListener, OnRecyclerViewItemClickListener, SearchView.OnQueryTextListener {
 
     ActivityEmployeeRecordBinding binding;
-    List<SectionModel> sectionModelList;
+    List<BaseItem> sectionModelList;
     Dialog dialog;
     int selectedSectionId = -1;
     EmployeeAdapter adapter;
@@ -144,7 +144,8 @@ public class EmployeeRecordActivity extends BaseRecyclerViewActivity implements 
         Spinner spinner = (Spinner) parent;
         if (spinner.getId() == binding.spSection.getId()) {
             if (sectionModelList != null && sectionModelList.size() > 0) {
-                selectedSectionId = sectionModelList.get(position).getId();
+                SectionModel model=(SectionModel) sectionModelList.get(position);
+                selectedSectionId = model.getId();
                 doGetRequest(AppConstants.GET_ALL_EMPLOYEES, getMultipleServerParams(), this);
 
             }

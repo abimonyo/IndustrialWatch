@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/tvStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Status: "
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:paddingBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/tvFrontDefects"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Front Defects:"
+        android:paddingBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/tvBackDefects"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Back Defects:"
+        android:paddingBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/tvSideDefects"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Side Defects:"
+        android:paddingBottom="8dp"/>
+
+    <!--<TextView
+        android:id="@+id/tvSide1Defects"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Side 1:"
+        android:paddingBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/tvSide2Defects"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Side 2:"
+        android:paddingBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/tvSide3Defects"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Side 3:"
+        android:paddingBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/tvSide4Defects"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Side 4:"
+        android:paddingBottom="8dp"/>-->
+
+    <Button
+        android:id="@+id/btnClose"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Close"/>
+</LinearLayout>
+</layout>
