@@ -33,3 +33,12 @@ The project includes a frontend developed in Android Native, offering a user-fri
     ```
 ## Contact
 For any inquiries, please contact [abdullahmustafa3607@gmail.com].
+
+<div style="border-radius: 10px; overflow: hidden; width: fit-content;">
+  <img src="./images/Slide_1.png" alt="Slide 1" />
+</div>
+<div style="border-radius: 10px; overflow: hidden; width: fit-content;">
+  <img src="./images/Slide_2.png" alt="Slide 2" />
+</div>
+<div style="border-radius: 10px; overflow: hidden; width: fit-content;">
+  <img src="./images/Slide_3.png" alt="Slide 3" />
